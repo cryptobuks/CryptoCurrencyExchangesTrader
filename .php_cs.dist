@@ -1,0 +1,46 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->files()
+    ->name('*.php')
+    ->in(__DIR__ . '/src')
+    ->in(__DIR__ . '/tests');
+
+return PhpCsFixer\Config::create()
+    ->setUsingCache(true)
+    ->setRiskyAllowed(true)
+    ->setRules([
+        '@PSR2' => true,
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'blank_line_before_statement' => [
+            'statements' => [
+                'break', 'case', 'continue', 'declare', 'default', 'do', 'for',
+                'foreach', 'if', 'return', 'switch', 'throw', 'try', 'while', 'yield',
+            ]
+        ],
+        'class_attributes_separation' => ['elements' => ['method', 'property']],
+        'concat_space' => ['spacing' => 'one'],
+        'declare_strict_types' => true,
+        'is_null' => true,
+        'mb_str_functions' => true,
+        'no_extra_blank_lines' => [
+            'tokens' => [
+                'case', 'continue', 'curly_brace_block', 'default', 'extra',
+                'parenthesis_brace_block', 'return', 'square_brace_block',
+                'switch', 'throw', 'use', 'useTrait', 'use_trait',
+            ]
+        ],
+        'no_useless_else' => true,
+        'no_useless_return' => true,
+        'ordered_class_elements' => true,
+        'ordered_imports' => true,
+        'phpdoc_order' => true,
+        'phpdoc_trim_consecutive_blank_line_separation' => true,
+        'psr0' => true,
+        'psr4' => true,
+        'strict_comparison' => true,
+        'yoda_style' => null,
+    ])
+    ->setFinder($finder);

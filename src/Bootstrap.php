@@ -63,14 +63,51 @@ final class Bootstrap
         return $this;
     }
 
+    /**
+     * @return Bootstrap
+     */
     public function enableAutoImportsProviders(): self
     {
         $this->containerBuilder->addCompilerPasses(new ProviderPass());
+
+        return $this;
     }
 
+    /**
+     * @param string $directory
+     *
+     * @return Bootstrap
+     */
     public function useCustomCacheDirectory(string $directory): self
     {
         $this->containerBuilder->setCacheDirectoryPath($directory);
+
+        return $this;
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return Bootstrap
+     */
+    public function addParameters(array  $params): self
+    {
+        $this->containerBuilder->addParameters($params);
+
+        return $this;
+    }
+
+    /**
+     * @param string $parametersPath
+     *
+     * @return Bootstrap
+     */
+    public function provideParametersPath(string $parametersPath): self
+    {
+        if (file_exists($parametersPath) && is_readable($parametersPath)) {
+            $parameters = include $parametersPath;
+            $this->containerBuilder->addParameters($parameters);
+        }
 
         return $this;
     }

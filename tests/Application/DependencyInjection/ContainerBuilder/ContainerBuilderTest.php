@@ -42,7 +42,7 @@ final class ContainerBuilderTest extends TestCase
      */
     public function successfulBuild(): void
     {
-        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = new ContainerBuilder('debug');
 
         $this->assertFalse($containerBuilder->hasActualContainer());
 
@@ -60,16 +60,30 @@ final class ContainerBuilderTest extends TestCase
      */
     public function successfulBuildWithFullConfiguration(): void
     {
-        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = new ContainerBuilder('debug');
 
         $this->assertFalse($containerBuilder->hasActualContainer());
 
         $containerBuilder->addCompilerPasses(new CommandPass(), new ProviderPass());
         $containerBuilder->addExtensions(new CryptoCurrencyExchangesExtension());
+        $containerBuilder->addParameters([
+            'test' => 123,
+            'class' => get_class($this)
+        ]);
 
-        /** @var ContainerInterface $container */
-        $container = $containerBuilder->build();
+        /** @var ContainerInterface $c */
+        $c = $containerBuilder->build();
 
-        $this->assertInstanceOf(ContainerInterface::class, $container);
+        $this->assertTrue($c->hasParameter('test'));
+        $this->assertTrue($c->hasParameter('class'));
+        $this->assertEquals(get_class($this),$c->getParameter('class'));
+        $this->assertEquals(123, $c->getParameter('test'));
+
+        $this->assertInstanceOf(ContainerInterface::class, $c);
+
+        $r = new \ReflectionClass($containerBuilder);
+        $property = $r->getProperty('environment');
+        $property->setAccessible(true);
+        $this->assertSame('debug',$property->getValue($containerBuilder));
     }
 }

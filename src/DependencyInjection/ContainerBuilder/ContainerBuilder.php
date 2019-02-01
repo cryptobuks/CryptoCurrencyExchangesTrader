@@ -15,13 +15,17 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 final class ContainerBuilder
 {
     private const CONTAINER_NAME_TEMPLATE = '%s%sProjectContainer';
+    private const ENV_DEBUG = 'debug';
 
     /**
      * @var \SplObjectStorage
      */
     private $compilerPasses;
 
-    private $environment = 'debug';
+    /**
+     * @var string
+     */
+    private $environment;
 
     /**
      * @var array
@@ -40,13 +44,14 @@ final class ContainerBuilder
      */
     private $configCache;
 
-    public function __construct()
+    public function __construct($environment = 'prod')
     {
         $compilerPassCollection = new \SplObjectStorage();
         $extensionsCollection = new \SplObjectStorage();
         $this->compilerPasses = $compilerPassCollection;
         $this->extensions = $extensionsCollection;
         $this->parameters = [];
+        $this->environment = $environment ?? self::ENV_DEBUG;
     }
 
     /**
@@ -74,7 +79,7 @@ final class ContainerBuilder
      */
     public function addParameters(array $parameters): void
     {
-        foreach ($parameters as $key => $value){
+        foreach ($parameters as $key => $value) {
             $this->parameters[$key] = $value;
         }
     }
@@ -104,7 +109,33 @@ final class ContainerBuilder
 
         $this->dumpContainer($containerBuilder);
 
-        return $this->cachedContainer();
+        /**
+         * @todo we just cannot return cachedContainer, for some reason his not work as expected
+         */
+        //return $this->cachedContainer();
+
+        return $containerBuilder;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasActualContainer(): bool
+    {
+        if ('debug' !== $this->environment) {
+            /* ConfigCache */
+            return true === $this->configCache()->isFresh();
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $directory
+     */
+    public function setCacheDirectoryPath(string $directory): void
+    {
+        $this->cacheDirectory = rtrim($directory, '/');
     }
 
     /**
@@ -185,26 +216,5 @@ final class ContainerBuilder
         $container = new $containerClassName();
 
         return $container;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasActualContainer(): bool
-    {
-        if ('debug' !== $this->environment) {
-            /* ConfigCache */
-            return true === $this->configCache()->isFresh();
-        }
-
-        return false;
-    }
-
-    /**
-     * @param string $directory
-     */
-    public function setCacheDirectoryPath(string $directory): void
-    {
-        $this->cacheDirectory = \rtrim($directory, '/');
     }
 }

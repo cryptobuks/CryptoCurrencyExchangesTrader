@@ -8,19 +8,11 @@ services:
 
   App\Fetcher\ProviderExecutor:
 
-  app.provider.resolver:
-    public: true
-    class: App\Provider\ProviderResolver
-
-  app.provider.executor:
-    public: true
-    class: App\Fetcher\ProviderExecutor
-
   Symfony\Component\Console\Application:
 
   App\Command\ListProvidersCommand:
     arguments:
-      - '@app.provider.resolver'
+      - '@App\Provider\ProviderResolver'
 
     tags:
       - { name: 'console.command'}
@@ -34,6 +26,10 @@ services:
     alias: Symfony\Component\Console\Application
 
   App\Provider\NullProvider:
+    tags:
+      - { name: exchanges.provider }
+
+  App\Provider\AnotherProvider:
     tags:
       - { name: exchanges.provider }
 

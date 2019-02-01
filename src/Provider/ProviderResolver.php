@@ -18,7 +18,7 @@ final class ProviderResolver
             return;
         }
 
-        $this->providers->attach($provider);
+        $this->providers[] = $provider;
     }
 
     /**

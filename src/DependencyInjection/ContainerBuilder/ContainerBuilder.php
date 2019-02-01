@@ -109,12 +109,7 @@ final class ContainerBuilder
 
         $this->dumpContainer($containerBuilder);
 
-        /*
-         * @todo we just cannot return cachedContainer, for some reason his not work as expected
-         */
-        //return $this->cachedContainer();
-
-        return $containerBuilder;
+        return $this->cachedContainer();
     }
 
     /**
@@ -193,7 +188,7 @@ final class ContainerBuilder
      */
     private function cacheDirectory(): string
     {
-        $cacheDirectory = (string) $this->cacheDirectory;
+        $cacheDirectory = $this->cacheDirectory;
 
         if ('' === $cacheDirectory && false === is_writable($cacheDirectory)) {
             $cacheDirectory = sys_get_temp_dir();

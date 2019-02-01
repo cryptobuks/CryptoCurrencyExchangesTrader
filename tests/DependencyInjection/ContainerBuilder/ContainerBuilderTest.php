@@ -43,7 +43,11 @@ final class ContainerBuilderTest extends TestCase
      */
     public function successfulBuild(): void
     {
-        $containerBuilder = new ContainerBuilder(Environment::dev());
+        $containerBuilder = new ContainerBuilder(Environment::test());
+
+        $containerBuilder->setCacheDirectoryPath(sys_get_temp_dir() . '/container_test');
+
+        $containerBuilder->addParameters(['zas' => 123]);
 
         $this->assertFalse($containerBuilder->hasActualContainer());
 
@@ -52,7 +56,10 @@ final class ContainerBuilderTest extends TestCase
 
         $this->assertFileExists(sys_get_temp_dir() . '/container_test');
 
+        $this->assertSame(123, $container->getParameter('zas'));
+
         @unlink(sys_get_temp_dir() . '/container_test');
+        $this->removeDirectory(sys_get_temp_dir() . '/container_test');
     }
 
     /**
@@ -61,6 +68,7 @@ final class ContainerBuilderTest extends TestCase
      */
     public function successfulBuildWithFullConfiguration(): void
     {
+        $this->removeDirectory(sys_get_temp_dir() . '/container_test');
         $containerBuilder = new ContainerBuilder(Environment::dev());
 
         $this->assertFalse($containerBuilder->hasActualContainer());
@@ -86,5 +94,21 @@ final class ContainerBuilderTest extends TestCase
         $property = $r->getProperty('environment');
         $property->setAccessible(true);
         $this->assertSame((string) Environment::dev(), (string) $property->getValue($containerBuilder));
+    }
+
+    /**
+     * @param string $path
+     */
+    private function removeDirectory(string $path): void
+    {
+        $files = glob(preg_replace('/(\*|\?|\[)/', '[$1]', $path) . '/{,.}*', GLOB_BRACE);
+
+        foreach ($files as $file) {
+            if ($file === $path . '/.' || $file === $path . '/..') {
+                continue;
+            }
+            is_dir($file) ? $this->removeDirectory($file) : unlink($file);
+        }
+        rmdir($path);
     }
 }

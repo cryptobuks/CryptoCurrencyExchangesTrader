@@ -7,7 +7,7 @@ namespace App\Tests\Application\DependencyInjection\ContainerBuilder;
 use App\DependencyInjection\Compiler\CommandPass;
 use App\DependencyInjection\Compiler\ProviderPass;
 use App\DependencyInjection\ContainerBuilder\ContainerBuilder;
-use App\DependencyInjection\Extention\CryptoCurrencyExchangesExtention;
+use App\DependencyInjection\Extension\CryptoCurrencyExchangesExtension;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -65,7 +65,7 @@ final class ContainerBuilderTest extends TestCase
         $this->assertFalse($containerBuilder->hasActualContainer());
 
         $containerBuilder->addCompilerPasses(new CommandPass(), new ProviderPass());
-        $containerBuilder->addExtensions(new CryptoCurrencyExchangesExtention());
+        $containerBuilder->addExtensions(new CryptoCurrencyExchangesExtension());
 
         /** @var ContainerInterface $container */
         $container = $containerBuilder->build();

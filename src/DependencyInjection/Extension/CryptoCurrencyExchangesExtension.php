@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DependencyInjection\Extention;
+namespace App\DependencyInjection\Extension;
 
 use App\Provider\ProviderInterface;
 use Symfony\Component\Config\FileLocator;
@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CryptoCurrencyExchangesExtention extends Extension
+final class CryptoCurrencyExchangesExtension extends Extension
 {
     /**
      * Loads a specific configuration.

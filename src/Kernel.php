@@ -52,4 +52,16 @@ final class Kernel
             $application->run();
         }
     }
+
+    /**
+     * @param string $service
+     *
+     * @return object
+     */
+    public function getKernelContainerService(string $service): object
+    {
+        $object = $this->container->get($service);
+
+        return $object;
+    }
 }

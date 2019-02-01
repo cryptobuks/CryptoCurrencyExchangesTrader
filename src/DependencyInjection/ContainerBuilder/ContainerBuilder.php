@@ -16,16 +16,28 @@ final class ContainerBuilder
 {
     private const CONTAINER_NAME_TEMPLATE = '%s%sProjectContainer';
 
+    /**
+     * @var \SplObjectStorage
+     */
     private $compilerPasses;
 
     private $environment = 'debug';
 
+    /**
+     * @var array
+     */
     private $parameters;
 
+    /**
+     * @var \SplObjectStorage
+     */
     private $extensions;
 
     private $cacheDirectory = __DIR__ . '/../../../var/cache';
 
+    /**
+     * @var ConfigCache|null
+     */
     private $configCache;
 
     public function __construct()
@@ -57,6 +69,19 @@ final class ContainerBuilder
         }
     }
 
+    /**
+     * @param array $parameters
+     */
+    public function addParameters(array $parameters): void
+    {
+        foreach ($parameters as $key => $value){
+            $this->parameters[$key] = $value;
+        }
+    }
+
+    /**
+     * @return ContainerInterface
+     */
     public function build(): ContainerInterface
     {
         $containerBuilder = new SymfonyContainerBuilder(new ParameterBag($this->parameters));
@@ -71,6 +96,10 @@ final class ContainerBuilder
             $extension->load($this->parameters, $containerBuilder);
         }
 
+        foreach ($this->parameters as $key => $value) {
+            $containerBuilder->setParameter($key, $value);
+        }
+
         $containerBuilder->compile();
 
         $this->dumpContainer($containerBuilder);
@@ -78,55 +107,9 @@ final class ContainerBuilder
         return $this->cachedContainer();
     }
 
-    public function hasActualContainer(): bool
-    {
-        if ('degug' === $this->environment) {
-            /* ConfigCache */
-            return true === $this->configCache()->isFresh();
-        }
-
-        return false;
-    }
-
-    private function getContainerClassPath(): string
-    {
-        return sprintf('%s/%s.php', $this->cacheDirectory(), $this->getContainerClassName());
-    }
-
-    private function cacheDirectory(): string
-    {
-        $cacheDirectory = (string) $this->cacheDirectory;
-
-        if ('' === $cacheDirectory && false === is_writable($cacheDirectory)) {
-            $cacheDirectory = sys_get_temp_dir();
-        }
-
-        return rtrim($cacheDirectory, '/');
-    }
-
-    private function getContainerClassName(): string
-    {
-        return sprintf(
-            self::CONTAINER_NAME_TEMPLATE,
-            lcfirst('Project'),
-            ucfirst((string) $this->environment)
-        );
-    }
-
     /**
-     * @return ContainerInterface
+     * @param SymfonyContainerBuilder $builder
      */
-    private function cachedContainer(): ContainerInterface
-    {
-        include_once $this->getContainerClassPath();
-
-        $containerClassName = $this->getContainerClassName();
-
-        $container = new $containerClassName();
-
-        return $container;
-    }
-
     private function dumpContainer(SymfonyContainerBuilder $builder): void
     {
         $dumper = new PhpDumper($builder);
@@ -142,6 +125,21 @@ final class ContainerBuilder
         }
     }
 
+    /**
+     * @return string
+     */
+    private function getContainerClassName(): string
+    {
+        return sprintf(
+            self::CONTAINER_NAME_TEMPLATE,
+            lcfirst('Project'),
+            ucfirst((string) $this->environment)
+        );
+    }
+
+    /**
+     * @return ConfigCache
+     */
     private function configCache(): ConfigCache
     {
         if (null === $this->configCache) {
@@ -150,5 +148,63 @@ final class ContainerBuilder
         }
 
         return $this->configCache;
+    }
+
+    /**
+     * @return string
+     */
+    private function getContainerClassPath(): string
+    {
+        return sprintf('%s/%s.php', $this->cacheDirectory(), $this->getContainerClassName());
+    }
+
+    /**
+     * @return string
+     */
+    private function cacheDirectory(): string
+    {
+        $cacheDirectory = (string) $this->cacheDirectory;
+
+        if ('' === $cacheDirectory && false === is_writable($cacheDirectory)) {
+            $cacheDirectory = sys_get_temp_dir();
+        }
+
+        return rtrim($cacheDirectory, '/');
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    private function cachedContainer(): ContainerInterface
+    {
+        /** @noinspection   PhpIncludeInspection Include generated file */
+        include_once $this->getContainerClassPath();
+
+        $containerClassName = $this->getContainerClassName();
+
+        $container = new $containerClassName();
+
+        return $container;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasActualContainer(): bool
+    {
+        if ('debug' !== $this->environment) {
+            /* ConfigCache */
+            return true === $this->configCache()->isFresh();
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $directory
+     */
+    public function setCacheDirectoryPath(string $directory): void
+    {
+        $this->cacheDirectory = \rtrim($directory, '/');
     }
 }

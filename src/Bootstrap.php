@@ -7,19 +7,22 @@ namespace App;
 use App\DependencyInjection\Compiler\CommandPass;
 use App\DependencyInjection\Compiler\ProviderPass;
 use App\DependencyInjection\ContainerBuilder\ContainerBuilder;
-use App\DependencyInjection\Extention\CryptoCurrencyExchangesExtention;
+use App\DependencyInjection\Extension\CryptoCurrencyExchangesExtension;
 use Dotenv\Dotenv;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class Bootstrap
 {
+    /**
+     * @var ContainerBuilder
+     */
     private $containerBuilder;
 
     private function __construct()
     {
         $this->containerBuilder = new ContainerBuilder();
 
-        $this->containerBuilder->addExtensions(new CryptoCurrencyExchangesExtention());
+        $this->containerBuilder->addExtensions(new CryptoCurrencyExchangesExtension());
     }
 
     /**
@@ -27,8 +30,6 @@ final class Bootstrap
      */
     public function boot(): ContainerInterface
     {
-        $this->containerBuilder->addCompilerPasses(new ProviderPass());
-
         return $this->containerBuilder->build();
     }
 
@@ -58,6 +59,18 @@ final class Bootstrap
     public function registerConsoleCommands(): self
     {
         $this->containerBuilder->addCompilerPasses(new CommandPass());
+
+        return $this;
+    }
+
+    public function enableAutoImportsProviders(): self
+    {
+        $this->containerBuilder->addCompilerPasses(new ProviderPass());
+    }
+
+    public function useCustomCacheDirectory(string $directory): self
+    {
+        $this->containerBuilder->setCacheDirectoryPath($directory);
 
         return $this;
     }

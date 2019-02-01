@@ -10,7 +10,6 @@
         "symfony/dependency-injection": "^4.2",
         "symfony/options-resolver": "^4.2",
         "symfony/validator": "^4.2",
-        "friendsofphp/php-cs-fixer": "^2.14",
         "vlucas/phpdotenv": "^3.3",
         "symfony/console": "^4.2",
         "symfony/config": "^4.2",
@@ -18,6 +17,7 @@
         "symfony/yaml": "^4.2"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.14",
         "phpstan/phpstan": "^0.11.1",
         "phpunit/phpunit": "^7.5",
         "vimeo/psalm": "^3.0"

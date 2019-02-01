@@ -7,7 +7,8 @@ use App\Kernel;
 include __DIR__ .'/../vendor/autoload.php';
 
 $bootstrap = Bootstrap::withDotEnv(__DIR__.'/../.env')
-->registerConsoleCommands();
+->registerConsoleCommands()
+->enableAutoImportsProviders();
 $container = $bootstrap->boot();
 $kernel = (new Kernel($container))
     ->enableSentryErrorHandler()

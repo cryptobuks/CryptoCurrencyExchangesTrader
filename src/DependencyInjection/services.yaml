@@ -1,0 +1,34 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  App\Provider\ProviderResolver:
+    public: true
+
+  app.provider.resolver:
+    alias: App\Provider\ProviderResolver
+
+  Symfony\Component\Console\Application:
+
+  shell.console:
+    public: true
+    alias: Symfony\Component\Console\Application
+
+  App\Provider\NullProvider:
+    tags:
+      - { name: exchanges.provider }
+
+  App\Command\CommandInterface:
+      autoconfigure: true
+
+  App\Command\ListProvidersCommand:
+    arguments:
+      - '@app.provider.resolver'
+    tags:
+      - { name: 'console.command'}
+
+  App\Command\SearchProvidersCommand:
+    tags:
+      - { name: 'console.command'}

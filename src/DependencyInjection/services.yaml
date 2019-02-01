@@ -5,12 +5,29 @@ services:
     public: false
 
   App\Provider\ProviderResolver:
-    public: true
+
+  App\Fetcher\ProviderExecutor:
 
   app.provider.resolver:
-    alias: App\Provider\ProviderResolver
+    public: true
+    class: App\Provider\ProviderResolver
+
+  app.provider.executor:
+    public: true
+    class: App\Fetcher\ProviderExecutor
 
   Symfony\Component\Console\Application:
+
+  App\Command\ListProvidersCommand:
+    arguments:
+      - '@app.provider.resolver'
+
+    tags:
+      - { name: 'console.command'}
+
+  App\Command\SearchProvidersCommand:
+    tags:
+      - { name: 'console.command'}
 
   shell.console:
     public: true
@@ -20,15 +37,3 @@ services:
     tags:
       - { name: exchanges.provider }
 
-  App\Command\CommandInterface:
-      autoconfigure: true
-
-  App\Command\ListProvidersCommand:
-    arguments:
-      - '@app.provider.resolver'
-    tags:
-      - { name: 'console.command'}
-
-  App\Command\SearchProvidersCommand:
-    tags:
-      - { name: 'console.command'}

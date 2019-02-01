@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DependencyInjection\Extension;
 
-use App\Provider\ProviderInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -28,12 +27,5 @@ final class CryptoCurrencyExchangesExtension extends Extension
         foreach ($configs as $key => $value) {
             $container->setParameter($key, $value);
         }
-
-        $container
-            ->registerForAutoconfiguration(ProviderInterface::class)
-            ->addTag(ProviderInterface::SERVICE_TAG);
-
-        $container->registerForAutoconfiguration(CommandInterface::class)
-            ->addTag('console.command');
     }
 }

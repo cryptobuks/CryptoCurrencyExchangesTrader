@@ -6,25 +6,26 @@ namespace App\Provider;
 
 final class ProviderResolver
 {
-    /** @var \SplObjectStorage */
-    private $providers;
+    /** @var array */
+    private $providers = [];
 
-    public function __construct()
+    /**
+     * @param \App\Provider\ProviderInterface $provider
+     */
+    public function addProvider(ProviderInterface $provider): void
     {
-        $this->providers = new \SplObjectStorage();
-    }
-
-    public function addProvider(ProviderInterface $provider)
-    {
-        if ($this->providers->contains($provider)) {
+        if (\in_array($provider, $this->providers, true)) {
             return;
         }
 
         $this->providers->attach($provider);
     }
 
-    public function test(): string
+    /**
+     * @return array
+     */
+    public function getProviders(): array
     {
-        return 'da suka';
+        return $this->providers;
     }
 }

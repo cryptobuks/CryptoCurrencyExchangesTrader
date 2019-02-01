@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Application\DependencyInjection\ContainerBuilder;
+namespace App\Tests\DependencyInjection\ContainerBuilder;
 
 use App\DependencyInjection\Compiler\CommandPass;
 use App\DependencyInjection\Compiler\ProviderPass;
 use App\DependencyInjection\ContainerBuilder\ContainerBuilder;
 use App\DependencyInjection\Extension\CryptoCurrencyExchangesExtension;
+use App\Environment;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -42,7 +43,7 @@ final class ContainerBuilderTest extends TestCase
      */
     public function successfulBuild(): void
     {
-        $containerBuilder = new ContainerBuilder('debug');
+        $containerBuilder = new ContainerBuilder(Environment::dev());
 
         $this->assertFalse($containerBuilder->hasActualContainer());
 
@@ -60,7 +61,7 @@ final class ContainerBuilderTest extends TestCase
      */
     public function successfulBuildWithFullConfiguration(): void
     {
-        $containerBuilder = new ContainerBuilder('debug');
+        $containerBuilder = new ContainerBuilder(Environment::dev());
 
         $this->assertFalse($containerBuilder->hasActualContainer());
 
@@ -68,7 +69,7 @@ final class ContainerBuilderTest extends TestCase
         $containerBuilder->addExtensions(new CryptoCurrencyExchangesExtension());
         $containerBuilder->addParameters([
             'test' => 123,
-            'class' => get_class($this)
+            'class' => \get_class($this),
         ]);
 
         /** @var ContainerInterface $c */
@@ -76,7 +77,7 @@ final class ContainerBuilderTest extends TestCase
 
         $this->assertTrue($c->hasParameter('test'));
         $this->assertTrue($c->hasParameter('class'));
-        $this->assertEquals(get_class($this),$c->getParameter('class'));
+        $this->assertEquals(\get_class($this), $c->getParameter('class'));
         $this->assertEquals(123, $c->getParameter('test'));
 
         $this->assertInstanceOf(ContainerInterface::class, $c);
@@ -84,6 +85,6 @@ final class ContainerBuilderTest extends TestCase
         $r = new \ReflectionClass($containerBuilder);
         $property = $r->getProperty('environment');
         $property->setAccessible(true);
-        $this->assertSame('debug',$property->getValue($containerBuilder));
+        $this->assertSame((string) Environment::dev(), (string) $property->getValue($containerBuilder));
     }
 }

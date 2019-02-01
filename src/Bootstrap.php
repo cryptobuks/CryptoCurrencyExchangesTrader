@@ -20,7 +20,10 @@ final class Bootstrap
 
     private function __construct()
     {
-        $this->containerBuilder = new ContainerBuilder();
+        $envValue = '' !== (string) getenv('APP_ENVIRONMENT')
+            ? (string) getenv('APP_ENVIRONMENT')
+            : 'dev';
+        $this->containerBuilder = new ContainerBuilder(Environment::create($envValue));
 
         $this->containerBuilder->addExtensions(new CryptoCurrencyExchangesExtension());
     }

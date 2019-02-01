@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DependencyInjection\ContainerBuilder;
 
+use App\Environment;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
@@ -15,7 +16,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 final class ContainerBuilder
 {
     private const CONTAINER_NAME_TEMPLATE = '%s%sProjectContainer';
-    private const ENV_DEBUG = 'debug';
 
     /**
      * @var \SplObjectStorage
@@ -23,7 +23,7 @@ final class ContainerBuilder
     private $compilerPasses;
 
     /**
-     * @var string
+     * @var Environment
      */
     private $environment;
 
@@ -44,14 +44,14 @@ final class ContainerBuilder
      */
     private $configCache;
 
-    public function __construct($environment = 'prod')
+    public function __construct(Environment $environment)
     {
         $compilerPassCollection = new \SplObjectStorage();
         $extensionsCollection = new \SplObjectStorage();
         $this->compilerPasses = $compilerPassCollection;
         $this->extensions = $extensionsCollection;
         $this->parameters = [];
-        $this->environment = $environment ?? self::ENV_DEBUG;
+        $this->environment = $environment;
     }
 
     /**
@@ -109,7 +109,7 @@ final class ContainerBuilder
 
         $this->dumpContainer($containerBuilder);
 
-        /**
+        /*
          * @todo we just cannot return cachedContainer, for some reason his not work as expected
          */
         //return $this->cachedContainer();
@@ -122,7 +122,7 @@ final class ContainerBuilder
      */
     public function hasActualContainer(): bool
     {
-        if ('debug' !== $this->environment) {
+        if (false === $this->environment->isDebug()) {
             /* ConfigCache */
             return true === $this->configCache()->isFresh();
         }
@@ -163,7 +163,7 @@ final class ContainerBuilder
     {
         return sprintf(
             self::CONTAINER_NAME_TEMPLATE,
-            lcfirst('Project'),
+            lcfirst('CCET'),
             ucfirst((string) $this->environment)
         );
     }
@@ -174,8 +174,7 @@ final class ContainerBuilder
     private function configCache(): ConfigCache
     {
         if (null === $this->configCache) {
-            $debug = $this->environment === 'debug';
-            $this->configCache = new ConfigCache($this->getContainerClassPath(), $debug);
+            $this->configCache = new ConfigCache($this->getContainerClassPath(), $this->environment->isDebug());
         }
 
         return $this->configCache;

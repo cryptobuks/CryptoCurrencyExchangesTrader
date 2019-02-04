@@ -6,6 +6,11 @@ namespace App\Provider;
 
 final class AnotherProvider implements ProviderInterface
 {
+    public function __toString(): string
+    {
+        return (new \ReflectionClass($this))->getShortName();
+    }
+
     public function test()
     {
         // TODO: Implement test() method.

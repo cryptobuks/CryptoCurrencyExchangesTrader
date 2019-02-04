@@ -13,11 +13,12 @@ services:
   App\Command\ListProvidersCommand:
     arguments:
       - '@App\Provider\ProviderResolver'
-
     tags:
       - { name: 'console.command'}
 
   App\Command\SearchProvidersCommand:
+    arguments:
+      - '@App\Provider\ProviderResolver'
     tags:
       - { name: 'console.command'}
 

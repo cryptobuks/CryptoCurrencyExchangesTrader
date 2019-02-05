@@ -19,6 +19,9 @@ final class Bootstrap
      */
     private $containerBuilder;
 
+    /**
+     * @param string|null $env
+     */
     private function __construct($env = null)
     {
         $envValue = '' !== (string) getenv('APP_ENVIRONMENT')

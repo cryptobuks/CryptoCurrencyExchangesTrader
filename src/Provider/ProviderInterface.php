@@ -8,5 +8,5 @@ interface ProviderInterface
 {
     public const SERVICE_TAG = 'exchanges.provider';
 
-    public function test();
+    public function __toString(): string;
 }

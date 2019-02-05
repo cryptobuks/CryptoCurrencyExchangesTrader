@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 interface HttpBuilderInterface
 {
     /**
-     * @param array|null $options
+     * @param array<array-key, mixed> $options
      *
      * @return Client
      */

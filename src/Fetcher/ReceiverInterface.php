@@ -6,8 +6,5 @@ namespace App\Fetcher;
 
 interface ReceiverInterface
 {
-    /**
-     * @return mixed
-     */
-    public function receive();
+    public function receive(): void;
 }

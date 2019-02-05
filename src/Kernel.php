@@ -68,9 +68,9 @@ final class Kernel
     /**
      * @param string $service
      *
-     * @return object
+     * @return mixed
      */
-    public function getKernelParameterService(string $service): object
+    public function getKernelParameterService(string $service)
     {
         $object = $this->container->getParameter($service);
 

@@ -37,6 +37,9 @@ final class ContainerBuilder
      */
     private $extensions;
 
+    /**
+     * @var string
+     */
     private $cacheDirectory = __DIR__ . '/../../../var/cache';
 
     /**
@@ -188,7 +191,7 @@ final class ContainerBuilder
      */
     private function cacheDirectory(): string
     {
-        $cacheDirectory = $this->cacheDirectory;
+        $cacheDirectory = (string) $this->cacheDirectory;
 
         if ('' === $cacheDirectory && false === is_writable($cacheDirectory)) {
             $cacheDirectory = sys_get_temp_dir();
@@ -202,9 +205,13 @@ final class ContainerBuilder
      */
     private function cachedContainer(): ContainerInterface
     {
-        /** @noinspection   PhpIncludeInspection Include generated file */
+        /**
+         * @noinspection   PhpIncludeInspection Include generated file
+         * @psalm-suppress UnresolvableInclude Include generated file
+         */
         include_once $this->getContainerClassPath();
 
+        /** @psalm-var class-string<\Symfony\Component\DependencyInjection\Container> $containerClassName */
         $containerClassName = $this->getContainerClassName();
 
         $container = new $containerClassName();

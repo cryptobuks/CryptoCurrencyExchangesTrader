@@ -10,9 +10,4 @@ final class AnotherProvider implements ProviderInterface
     {
         return (new \ReflectionClass($this))->getShortName();
     }
-
-    public function test()
-    {
-        // TODO: Implement test() method.
-    }
 }

@@ -8,7 +8,7 @@ if (!\function_exists('avg')) {
     /**
      * return average of the giving items.
      *
-     * @param $items
+     * @param array<array-key, mixed> $items
      *
      * @return float|int|false
      */

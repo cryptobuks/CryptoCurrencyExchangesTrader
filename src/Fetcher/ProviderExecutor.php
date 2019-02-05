@@ -18,11 +18,7 @@ final class ProviderExecutor implements ReceiverInterface
         $this->container = $container;
     }
 
-    /**
-     * @return mixed
-     */
-    public function receive()
+    public function receive(): void
     {
-        // TODO: Implement receive() method.
     }
 }

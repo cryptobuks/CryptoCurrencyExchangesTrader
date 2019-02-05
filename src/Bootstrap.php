@@ -10,6 +10,7 @@ use App\DependencyInjection\ContainerBuilder\ContainerBuilder;
 use App\DependencyInjection\Extension\CryptoCurrencyExchangesExtension;
 use Dotenv\Dotenv;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 
 final class Bootstrap
 {
@@ -103,13 +104,13 @@ final class Bootstrap
     }
 
     /**
-     * @param array $extensions
+     * @param Extension[] $extensions
      *
      * @return Bootstrap
      */
-    public function addExtension($extensions): self
+    public function addExtension(Extension ...$extensions): self
     {
-        $this->containerBuilder->addExtensions($extensions);
+        $this->containerBuilder->addExtensions(...$extensions);
 
         return $this;
     }

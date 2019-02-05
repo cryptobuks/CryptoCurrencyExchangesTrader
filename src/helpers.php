@@ -14,8 +14,7 @@ if (!\function_exists('avg')) {
      */
     function avg($items)
     {
-        //waiting is_countable ;P
-        if ($items instanceof \Countable || \is_array($items)) {
+        if (is_countable($items)) {
             return array_sum($items) / \count($items);
         }
 

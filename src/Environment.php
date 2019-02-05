@@ -12,11 +12,13 @@ final class Environment
     private const ENVIRONMENT_PRODUCTION = 'prod';
     private const ENVIRONMENT_SANDBOX = 'dev';
     private const ENVIRONMENT_TESTING = 'test';
+    private const ENVIRONMENT_BOOTING = 'boot';
 
     private const LIST = [
         self::ENVIRONMENT_PRODUCTION,
         self::ENVIRONMENT_SANDBOX,
         self::ENVIRONMENT_TESTING,
+        self::ENVIRONMENT_BOOTING,
     ];
 
     /**
@@ -72,6 +74,16 @@ final class Environment
     public static function prod(): self
     {
         return new self(self::ENVIRONMENT_PRODUCTION);
+    }
+
+    /**
+     * Creating a booting environment.
+     *
+     * @return self
+     */
+    public static function boot(): self
+    {
+        return new self(self::ENVIRONMENT_BOOTING);
     }
 
     /**

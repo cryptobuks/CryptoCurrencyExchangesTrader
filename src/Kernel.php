@@ -64,4 +64,16 @@ final class Kernel
 
         return $object;
     }
+
+    /**
+     * @param string $service
+     *
+     * @return object
+     */
+    public function getKernelParameterService(string $service): object
+    {
+        $object = $this->container->getParameter($service);
+
+        return $object;
+    }
 }

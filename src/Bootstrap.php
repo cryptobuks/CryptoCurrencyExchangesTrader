@@ -18,13 +18,13 @@ final class Bootstrap
      */
     private $containerBuilder;
 
-    private function __construct()
+    private function __construct($env = null)
     {
         $envValue = '' !== (string) getenv('APP_ENVIRONMENT')
             ? (string) getenv('APP_ENVIRONMENT')
             : 'dev';
-        $this->containerBuilder = new ContainerBuilder(Environment::create($envValue));
-
+        $this->containerBuilder = new ContainerBuilder(Environment::create($env ?? $envValue));
+        $this->containerBuilder->addParameters(['ccet.environment' => $env ?? $envValue]);
         $this->containerBuilder->addExtensions(new CryptoCurrencyExchangesExtension());
     }
 
@@ -51,7 +51,9 @@ final class Bootstrap
      */
     public static function withDotEnv(string $envFilePath): self
     {
-        Dotenv::create($envFilePath);
+        $t = Dotenv::create($envFilePath);
+
+        $t->load();
 
         return new self();
     }
@@ -96,6 +98,18 @@ final class Bootstrap
     public function addParameters(array  $params): self
     {
         $this->containerBuilder->addParameters($params);
+
+        return $this;
+    }
+
+    /**
+     * @param array $extensions
+     *
+     * @return Bootstrap
+     */
+    public function addExtension($extensions): self
+    {
+        $this->containerBuilder->addExtensions($extensions);
 
         return $this;
     }

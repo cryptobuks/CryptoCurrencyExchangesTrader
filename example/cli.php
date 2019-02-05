@@ -6,7 +6,7 @@ use App\Kernel;
 
 include __DIR__ .'/../vendor/autoload.php';
 
-$bootstrap = Bootstrap::withDotEnv(__DIR__.'/../.env')
+$bootstrap = Bootstrap::withDotEnv(__DIR__.'/../')
 ->registerConsoleCommands()
 ->enableAutoImportsProviders()
 ->addParameters([

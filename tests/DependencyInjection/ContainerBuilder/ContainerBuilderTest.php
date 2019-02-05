@@ -9,6 +9,7 @@ use App\DependencyInjection\Compiler\ProviderPass;
 use App\DependencyInjection\ContainerBuilder\ContainerBuilder;
 use App\DependencyInjection\Extension\CryptoCurrencyExchangesExtension;
 use App\Environment;
+use function App\removeDirectory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -45,7 +46,7 @@ final class ContainerBuilderTest extends TestCase
     {
         $containerBuilder = new ContainerBuilder(Environment::test());
 
-        $containerBuilder->setCacheDirectoryPath(sys_get_temp_dir() . '/container_test');
+        $containerBuilder->setCacheDirectoryPath($this->cacheDirectory);
 
         $containerBuilder->addParameters(['zas' => 123]);
 
@@ -59,7 +60,7 @@ final class ContainerBuilderTest extends TestCase
         $this->assertSame(123, $container->getParameter('zas'));
 
         @unlink(sys_get_temp_dir() . '/container_test');
-        $this->removeDirectory(sys_get_temp_dir() . '/container_test');
+        removeDirectory(sys_get_temp_dir() . '/container_test');
     }
 
     /**
@@ -68,47 +69,33 @@ final class ContainerBuilderTest extends TestCase
      */
     public function successfulBuildWithFullConfiguration(): void
     {
-        $this->removeDirectory(sys_get_temp_dir() . '/container_test');
-        $containerBuilder = new ContainerBuilder(Environment::dev());
+        removeDirectory($this->cacheDirectory);
+        $containerBuilder = new ContainerBuilder(Environment::boot());
 
         $this->assertFalse($containerBuilder->hasActualContainer());
 
         $containerBuilder->addCompilerPasses(new CommandPass(), new ProviderPass());
         $containerBuilder->addExtensions(new CryptoCurrencyExchangesExtension());
+        $containerBuilder->setCacheDirectoryPath($this->cacheDirectory);
         $containerBuilder->addParameters([
-            'test' => 123,
+            'testz' => 123,
             'class' => \get_class($this),
         ]);
 
         /** @var ContainerInterface $c */
         $c = $containerBuilder->build();
-
-        $this->assertTrue($c->hasParameter('test'));
+        $this->assertTrue($c->hasParameter('testz'));
         $this->assertTrue($c->hasParameter('class'));
         $this->assertEquals(\get_class($this), $c->getParameter('class'));
-        $this->assertEquals(123, $c->getParameter('test'));
+        $this->assertEquals(123, $c->getParameter('testz'));
 
         $this->assertInstanceOf(ContainerInterface::class, $c);
 
         $r = new \ReflectionClass($containerBuilder);
         $property = $r->getProperty('environment');
         $property->setAccessible(true);
-        $this->assertSame((string) Environment::dev(), (string) $property->getValue($containerBuilder));
-    }
-
-    /**
-     * @param string $path
-     */
-    private function removeDirectory(string $path): void
-    {
-        $files = glob(preg_replace('/(\*|\?|\[)/', '[$1]', $path) . '/{,.}*', GLOB_BRACE);
-
-        foreach ($files as $file) {
-            if ($file === $path . '/.' || $file === $path . '/..') {
-                continue;
-            }
-            is_dir($file) ? $this->removeDirectory($file) : unlink($file);
-        }
-        rmdir($path);
+        $this->assertSame((string) Environment::boot(), (string) $property->getValue($containerBuilder));
+        @unlink(sys_get_temp_dir() . '/container_test');
+        removeDirectory(sys_get_temp_dir() . '/container_test');
     }
 }

@@ -60,7 +60,7 @@ final class SearchProvidersCommand extends Command
 
             $same = $candidates[0] === $computedArgument;
             $same ? $io->success(
-                $this->providePayload($computedArgument, $availableProviders)
+                $this->providePayload((string)$computedArgument, $availableProviders)
             ) : $io->warning($message);
         }
     }

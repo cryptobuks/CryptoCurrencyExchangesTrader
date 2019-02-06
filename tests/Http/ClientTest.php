@@ -65,6 +65,5 @@ class ClientTest extends TestCase
     public function testShouldThrowExceptionIfIncorrectOptionsSet($options): void
     {
         $client = ClientBuilder::build($options);
-        dd($client);
     }
 }

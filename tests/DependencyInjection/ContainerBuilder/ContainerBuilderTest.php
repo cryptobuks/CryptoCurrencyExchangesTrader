@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\DependencyInjection\ContainerBuilder;
+namespace Kefzce\CryptoCurrencyExchanges\Tests\DependencyInjection\ContainerBuilder;
 
-use App\DependencyInjection\Compiler\CommandPass;
-use App\DependencyInjection\Compiler\ProviderPass;
-use App\DependencyInjection\ContainerBuilder\ContainerBuilder;
-use App\DependencyInjection\Extension\CryptoCurrencyExchangesExtension;
-use App\Environment;
-use function App\removeDirectory;
+use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Compiler\CommandPass;
+use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Compiler\ProviderPass;
+use Kefzce\CryptoCurrencyExchanges\DependencyInjection\ContainerBuilder\ContainerBuilder;
+use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Extension\KefzceCryptoCurrencyExchangesExtension;
+use Kefzce\CryptoCurrencyExchanges\Environment;
+use function Kefzce\CryptoCurrencyExchanges\removeDirectory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -40,7 +40,7 @@ final class ContainerBuilderTest extends TestCase
 
     /**
      * @test
-     * @covers \App\DependencyInjection\ContainerBuilder\ContainerBuilder
+     * @covers \Kefzce\CryptoCurrencyExchanges\DependencyInjection\ContainerBuilder\ContainerBuilder
      */
     public function successfulBuild(): void
     {
@@ -65,7 +65,7 @@ final class ContainerBuilderTest extends TestCase
 
     /**
      * @test
-     * @covers \App\DependencyInjection\ContainerBuilder\ContainerBuilder
+     * @covers \Kefzce\CryptoCurrencyExchanges\DependencyInjection\ContainerBuilder\ContainerBuilder
      */
     public function successfulBuildWithFullConfiguration(): void
     {
@@ -75,7 +75,7 @@ final class ContainerBuilderTest extends TestCase
         $this->assertFalse($containerBuilder->hasActualContainer());
 
         $containerBuilder->addCompilerPasses(new CommandPass(), new ProviderPass());
-        $containerBuilder->addExtensions(new CryptoCurrencyExchangesExtension());
+        $containerBuilder->addExtensions(new KefzceCryptoCurrencyExchangesExtension());
         $containerBuilder->setCacheDirectoryPath($this->cacheDirectory);
         $containerBuilder->addParameters([
             'testz' => 123,

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Command;
+namespace Kefzce\CryptoCurrencyExchanges\Tests\Command;
 
-use App\Command\SearchProvidersCommand;
-use App\DependencyInjection\Compiler\ProviderPass;
-use App\Provider\ProviderResolver;
+use Kefzce\CryptoCurrencyExchanges\Command\SearchProvidersCommand;
+use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Compiler\ProviderPass;
+use Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;

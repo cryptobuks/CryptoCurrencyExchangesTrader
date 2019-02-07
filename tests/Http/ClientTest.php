@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Http;
+namespace Kefzce\CryptoCurrencyExchanges\Tests\Http;
 
-use App\Http\ClientBuilder;
 use GuzzleHttp\ClientInterface;
+use Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase

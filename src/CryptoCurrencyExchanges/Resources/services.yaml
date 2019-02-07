@@ -1,0 +1,47 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver:
+
+  Kefzce\CryptoCurrencyExchanges\Fetcher\ProviderExecutor:
+
+  Symfony\Component\Console\Application:
+
+  Kefzce\CryptoCurrencyExchanges\Command\ListProvidersCommand:
+    arguments:
+      - '@Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver'
+    tags:
+      - { name: 'console.command', command: 'providers:list' }
+
+  Kefzce\CryptoCurrencyExchanges\Command\SearchProvidersCommand:
+    arguments:
+      - '@Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver'
+    tags:
+      - { name: 'console.command', command: 'provider:search' }
+
+  Kefzce\CryptoCurrencyExchanges\Command\DebugContainerCommand:
+    arguments:
+      - '@service_container'
+    tags:
+      - { name: 'console.command', command: 'debug:container' }
+
+  shell.console:
+    public: true
+    alias: Symfony\Component\Console\Application
+
+  Kefzce\CryptoCurrencyExchanges\Provider\NullProvider:
+    tags:
+      - { name: exchanges.provider }
+
+  Kefzce\CryptoCurrencyExchanges\Provider\AnotherProvider:
+    tags:
+      - { name: exchanges.provider }
+
+  Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder:
+
+#  http.client:
+#    class: '@Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder'
+#    factory:   'Kefzce\CryptoCurrencyExchangesHttp\ClientBuilder:build'

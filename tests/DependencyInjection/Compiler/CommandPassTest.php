@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\DependencyInjection\Compiler;
+namespace Kefzce\CryptoCurrencyExchanges\Tests\DependencyInjection\Compiler;
 
-use App\DependencyInjection\Compiler\CommandPass;
+use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Compiler\CommandPass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

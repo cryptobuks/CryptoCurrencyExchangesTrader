@@ -100,10 +100,6 @@ final class SearchProvidersCommand extends Command
 
         /** @var ProviderInterface|\Kefzce\Command\Configurable $computedProvider */
         $computedProvider = $haystack[$key];
-//        $computedProvider->provide([
-//            'provider' => '123',
-//            'test' => '56'
-//        ]);
 
         return $computedProvider->describe();
     }

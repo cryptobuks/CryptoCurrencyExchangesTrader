@@ -6,11 +6,11 @@ namespace Kefzce\CryptoCurrencyExchanges\Provider;
 
 final class ProviderResolver
 {
-    /** @var array */
+    /** @var array|ProviderInterface[] */
     private $providers = [];
 
     /**
-     * @param \Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface $provider
+     * @param ProviderInterface $provider
      */
     public function addProvider(ProviderInterface $provider): void
     {

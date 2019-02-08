@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -48,6 +49,7 @@ final class DebugContainerCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
         $type = $input->getArgument('property');
         $this->applyWorkMode([
             'workmode' => $type,
@@ -71,13 +73,12 @@ final class DebugContainerCommand extends Command
         $property->setAccessible(true);
         $fields = $property->getValue($this->container);
 
-        if (\function_exists('dd')) {
+        if (\function_exists('dd') && !getenv('PHPUNITENV')) {
             /* @noinspection ForgottenDebugOutputInspection */
             dd($fields);
         }
-        /* @noinspection ForgottenDebugOutputInspection */
-        var_dump($fields);
-        die();
+
+        $io->write(array_map('get_class', $fields));
     }
 
     /**

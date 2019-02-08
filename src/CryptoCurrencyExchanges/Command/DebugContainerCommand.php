@@ -50,7 +50,7 @@ final class DebugContainerCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $type = $input->getArgument('property');
+        $type = (string) $input->getArgument('property');
         $this->applyWorkMode([
             'workmode' => $type,
         ]);

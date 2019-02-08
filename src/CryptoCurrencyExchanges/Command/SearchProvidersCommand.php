@@ -61,7 +61,7 @@ final class SearchProvidersCommand extends Command
             $message = sprintf(
                 'Provider "%s" not found... Did you mean "%s" ? 
                  providers:list to see all available providers',
-                $computedArgument,
+                (string) $computedArgument,
                 implode('", "', $candidates)
             );
 

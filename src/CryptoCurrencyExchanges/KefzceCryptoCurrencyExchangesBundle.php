@@ -22,6 +22,6 @@ final class KefzceCryptoCurrencyExchangesBundle extends Bundle
 
     public function getContainerExtension()
     {
-        return KefzceCryptoCurrencyExchangesExtension::class;
+        return new KefzceCryptoCurrencyExchangesExtension();
     }
 }

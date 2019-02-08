@@ -22,12 +22,6 @@ services:
     tags:
       - { name: 'console.command', command: 'provider:search' }
 
-  Kefzce\CryptoCurrencyExchanges\Command\DebugContainerCommand:
-    arguments:
-      - '@service_container'
-    tags:
-      - { name: 'console.command', command: 'debug:container' }
-
   shell.console:
     public: true
     alias: Symfony\Component\Console\Application

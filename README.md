@@ -9,7 +9,7 @@
 composer require systemfailure/crypto-currency-exchanges-trader
 ```
 # Using a single Provider w/o creating Kernel
-> Important! Provider should be accessible from outside via [container configuration](https://github.com/kefzce/CryptoCurrencyExchangesTrader/blob/master/src/CryptoCurrencyExchanges/Resources/services.yaml#L5) / [explanation](https://symfony.com/doc/current/service_container/alias_private.html)
+> Important! Provider should be accessible from outside via [container configuration](https://github.com/kefzce/CryptoCurrencyExchangesTrader/blob/master/src/CryptoCurrencyExchanges/Resources/services.yaml#L5) / [explanation](https://symfony.com/blog/new-in-symfony-3-4-services-are-private-by-default)
 ```php
 <?php
 // import namespace

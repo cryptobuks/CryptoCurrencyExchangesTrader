@@ -1,0 +1,5 @@
+parameters:
+  ccet_environment: test
+  example:
+    - su4ka
+    - kekau

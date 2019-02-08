@@ -30,6 +30,7 @@ final class ListProvidersCommand extends Command
 
     protected function configure(): void
     {
+        $this->setDescription('Print list providers');
         parent::configure();
     }
 

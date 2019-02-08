@@ -32,6 +32,7 @@ final class SearchProvidersCommand extends Command
 
     protected function configure(): void
     {
+        $this->setDescription('Search providers with autosuggestion, print nice info');
         $this->addArgument(
             'provider',
             InputArgument::REQUIRED, 'Name of the search provider e.g Short Name of FQCN'

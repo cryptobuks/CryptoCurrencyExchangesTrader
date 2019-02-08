@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges;
 
+use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Compiler\ProviderPass;
 use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Extension\KefzceCryptoCurrencyExchangesExtension;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,6 +19,9 @@ final class KefzceCryptoCurrencyExchangesBundle extends Bundle
         $container
             ->registerForAutoconfiguration(ProviderInterface::class)
             ->addTag(ProviderInterface::SERVICE_TAG);
+
+        $container->addCompilerPass(new ProviderPass());
+        $container->registerExtension(new KefzceCryptoCurrencyExchangesExtension());
     }
 
     public function getContainerExtension()

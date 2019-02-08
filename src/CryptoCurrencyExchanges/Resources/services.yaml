@@ -33,10 +33,12 @@ services:
     alias: Symfony\Component\Console\Application
 
   Kefzce\CryptoCurrencyExchanges\Provider\NullProvider:
+    public: true
     tags:
       - { name: exchanges.provider }
 
   Kefzce\CryptoCurrencyExchanges\Provider\AnotherProvider:
+    public: true
     tags:
       - { name: exchanges.provider }
 

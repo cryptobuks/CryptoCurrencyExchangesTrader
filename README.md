@@ -4,19 +4,59 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/kefzce/CryptoCurrencyExchangesTrader/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/kefzce/CryptoCurrencyExchangesTrader/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/kefzce/cli-parser/v/stable)](https://github.com/kefzce/CryptoCurrencyExchangesTrader) [![Total Downloads](https://poser.pugx.org/kefzce/cli-parser/downloads)](https://github.com/kefzce/CryptoCurrencyExchangesTrader) [![Latest Unstable Version](https://poser.pugx.org/kefzce/cli-parser/v/unstable)](https://github.com/kefzce/CryptoCurrencyExchangesTrader) [![License](https://poser.pugx.org/kefzce/cli-parser/license)](https://github.com/kefzce/CryptoCurrencyExchangesTrader) [![composer.lock](https://poser.pugx.org/kefzce/cli-parser/composerlock)](https://github.com/kefzce/CryptoCurrencyExchangesTrader)
 
-
-# Booting into console mode
+# Installation
+```bash
+composer require systemfailure/crypto-currency-exchanges-trader
+```
+# Using a single Provider w/o creating Kernel
+> Important! Provider should be accessible from outside via [container configuration](https://github.com/kefzce/CryptoCurrencyExchangesTrader/blob/master/src/CryptoCurrencyExchanges/Resources/services.yaml#L5) / [explanation](https://symfony.com/doc/current/service_container/alias_private.html)
 ```php
-#!/usr/bin/env php
 <?php
+// import namespace
+use Kefzce\CryptoCurrencyExchanges\Bootstrap;
 
+include_once __DIR__ . 'vendor/autoload.php'; // boot autoloader
+
+$bootstrap = Bootstrap::withDotEnv(__DIR__) //specify .env folder or use ::withEnvironmentValue() 
+->enableAutoImportsProviders(); // required things, register all providers into DependencyInjection Container
+$container = $bootstrap->boot(); // fetching container
+$computedProvider = $container->get(SomeProvider::class); //SomeProvider instance
+```
+
+
+# With ProviderBuilder:
+```php
+<?php
+include_once __DIR__ . 'vendor/autoload.php'; // boot autoloader
+
+$computedProvider = (new ProviderBuilder())->build(SomeProvider::class); 
+// Same as
+$computedProvider = ProviderBuilder::build(FQCN::class);
+// $computedProvider variable contains ready to work an instance of required Provider.
+```
+
+# List of all available Providers:
+> After booting in console mode OR added KefzceCryptoCurrencyExchangesBundle::class => ['all' => true], into bundles.php (Symfony)
+```bash
+php bin/console providers:list
+```
+# Search provider by FQCN:
+> After booting in console mode OR added KefzceCryptoCurrencyExchangesBundle::class => ['all' => true], into bundles.php (Symfony)
+
+```bash
+php bin/console providers:search ProviderName // give some nice output information about provider e.g service tag
+```
+# Booting into console mode
+> Not required if you using this package with Symfony framework
+```php
+<?php
 // import namespace
 use Kefzce\CryptoCurrencyExchanges\Bootstrap;
 use Kefzce\CryptoCurrencyExchanges\Kernel;
 
-include_once __DIR__ .'/../vendor/autoload.php'; // boot autoloader
+include_once __DIR__ . 'vendor/autoload.php'; // boot autoloader
 
-$bootstrap = Bootstrap::withDotEnv(__DIR__) //specify .env folder
+$bootstrap = Bootstrap::withDotEnv(__DIR__) //specify .env folder or use ::withEnvironmentValue() 
 ->registerConsoleCommands() //if you wanna boot into console mode provide a few command 
 ->enableAutoImportsProviders() // required things, register all providers into DependencyInjection Container
 ->addParameters([
@@ -29,24 +69,9 @@ $kernel = (new Kernel($container)) // create kernel and passing container into
     ->runInConsoleMode(); //booting application into console mode
 ```
 
-# Using a single Provider
-To start using single provider, just manually create them
-e.g
-```php
-<?php
 
-include_once __DIR__ .'/../vendor/autoload.php'; // boot autoloader
-
-$provider = new \Kefzce\CryptoCurrencyExchanges\Provider\AnotherProvider(); //and passing an additional config into constructor
-```
-
-
-or even with ProviderBuilder:
-
-```php
-<?php
-
-include_once __DIR__ .'/../vendor/autoload.php'; // boot autoloader
-
-$computedProvider = (new ProviderBuilder())->build(SomeProvider::class); // SomeProvider
+# Run tests
+> All test available on tests folder, run them directly by typing
+```bash
+composer test
 ```

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Bootstrap;
+namespace Kefzce\CryptoCurrencyExchanges\Tests\Bootstrap;
 
-use App\Bootstrap;
-use App\DependencyInjection\Extension\CryptoCurrencyExchangesExtension;
-use App\Environment;
-use function App\removeDirectory;
+use Kefzce\CryptoCurrencyExchanges\Bootstrap;
+use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Extension\KefzceCryptoCurrencyExchangesExtension;
+use Kefzce\CryptoCurrencyExchanges\Environment;
+use function Kefzce\CryptoCurrencyExchanges\removeDirectory;
 use PHPUnit\Framework\TestCase;
 
 class BootstrapTest extends TestCase
@@ -37,12 +37,12 @@ class BootstrapTest extends TestCase
     {
         $bootstrap = Bootstrap::withEnvironmentValues();
         $bootstrap->useCustomCacheDirectory($this->cacheDirectory);
-        $bootstrap->addExtension(new CryptoCurrencyExchangesExtension());
+        $bootstrap->addExtension(new KefzceCryptoCurrencyExchangesExtension());
         $bootstrap->addParameters(['qwerty' => 1]);
         /** @var \Symfony\Component\DependencyInjection\ContainerInterface $container */
         $container = $bootstrap->boot();
         $this->assertTrue($container->hasParameter('qwerty'));
         $this->assertEquals(1, $container->getParameter('qwerty'));
-        $this->assertEquals((string) Environment::dev(), $container->getParameter('ccet.environment'));
+        $this->assertEquals((string) Environment::dev(), $container->getParameter('ccet_environment'));
     }
 }

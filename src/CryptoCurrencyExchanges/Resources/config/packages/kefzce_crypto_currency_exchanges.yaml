@@ -1,0 +1,5 @@
+parameters:
+  daun: teza
+  array:
+    - value
+    - another

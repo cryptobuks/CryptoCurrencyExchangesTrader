@@ -14,7 +14,8 @@
         "symfony/console": "^4.2",
         "symfony/config": "^4.2",
         "symfony/cache": "^4.2",
-        "symfony/yaml": "^4.2"
+        "symfony/yaml": "^4.2",
+        "symfony/http-kernel": "^4.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
@@ -31,15 +32,15 @@
     ],
     "autoload": {
         "psr-4": {
-            "App\\" : "src/"
+            "Kefzce\\CryptoCurrencyExchanges\\": "src/CryptoCurrencyExchanges"
         },
         "files": [
-            "src/helpers.php"
+            "src/CryptoCurrencyExchanges/helpers.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Kefzce\\CryptoCurrencyExchanges\\Tests\\": "tests/"
         }
     },
     "scripts": {

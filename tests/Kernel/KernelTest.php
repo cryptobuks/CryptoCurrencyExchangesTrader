@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Kernel;
+namespace Kefzce\CryptoCurrencyExchanges\Tests\Kernel;
 
-use App\Bootstrap;
-use App\DependencyInjection\Extension\CryptoCurrencyExchangesExtension;
-use App\Kernel;
-use function App\removeDirectory;
+use Kefzce\CryptoCurrencyExchanges\Bootstrap;
+use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Extension\KefzceCryptoCurrencyExchangesExtension;
+use Kefzce\CryptoCurrencyExchanges\Kernel;
+use function Kefzce\CryptoCurrencyExchanges\removeDirectory;
 use PHPUnit\Framework\TestCase;
 
 class KernelTest extends TestCase
@@ -38,7 +38,7 @@ class KernelTest extends TestCase
 
         $bootstrap = Bootstrap::withDotEnv(__DIR__ . '/Stubs');
         $bootstrap->useCustomCacheDirectory($this->cacheDirectory);
-        $bootstrap->addExtension(new CryptoCurrencyExchangesExtension());
+        $bootstrap->addExtension(new KefzceCryptoCurrencyExchangesExtension());
         $bootstrap->provideParametersPath(__DIR__ . 'Stubs/parameters.php');
 
         $bootstrap->addParameters(['std' => new \stdClass()]);
@@ -66,6 +66,6 @@ class KernelTest extends TestCase
         $param = $this->kernel->getKernelParameterService('std');
 
         $this->assertInstanceOf(\stdClass::class, $param);
-        $this->assertEquals(getenv('APP_ENVIRONMENT'), $this->container->getParameter('ccet.environment'));
+        $this->assertEquals(getenv('APP_ENVIRONMENT'), $this->container->getParameter('ccet_environment'));
     }
 }

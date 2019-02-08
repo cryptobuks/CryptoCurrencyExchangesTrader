@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\DependencyInjection\Compiler;
+namespace Kefzce\CryptoCurrencyExchanges\Tests\DependencyInjection\Compiler;
 
-use App\DependencyInjection\Compiler\ProviderPass;
-use App\Provider\ProviderInterface;
-use App\Provider\ProviderResolver;
+use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Compiler\ProviderPass;
+use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
+use Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

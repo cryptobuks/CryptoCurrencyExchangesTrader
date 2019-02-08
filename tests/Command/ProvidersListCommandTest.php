@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Command;
+namespace Kefzce\CryptoCurrencyExchanges\Tests\Command;
 
-use App\Command\ListProvidersCommand;
-use App\Provider\ProviderResolver;
+use Kefzce\CryptoCurrencyExchanges\Command\ListProvidersCommand;
+use Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;

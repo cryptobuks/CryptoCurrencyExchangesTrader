@@ -2,8 +2,11 @@
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/kefzce/CryptoCurrencyExchangesTrader/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kefzce/CryptoCurrencyExchangesTrader/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/kefzce/CryptoCurrencyExchangesTrader/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/kefzce/CryptoCurrencyExchangesTrader/?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/kefzce/cli-parser/v/stable)](https://github.com/kefzce/CryptoCurrencyExchangesTrader) [![Total Downloads](https://poser.pugx.org/kefzce/cli-parser/downloads)](https://github.com/kefzce/CryptoCurrencyExchangesTrader) [![Latest Unstable Version](https://poser.pugx.org/kefzce/cli-parser/v/unstable)](https://github.com/kefzce/CryptoCurrencyExchangesTrader) [![License](https://poser.pugx.org/kefzce/cli-parser/license)](https://github.com/kefzce/CryptoCurrencyExchangesTrader) [![composer.lock](https://poser.pugx.org/kefzce/cli-parser/composerlock)](https://github.com/kefzce/CryptoCurrencyExchangesTrader)
-
+[![Latest Stable Version](https://poser.pugx.org/systemfailure/crypto-currency-exchanges-trader/v/stable)](https://packagist.org/packages/systemfailure/crypto-currency-exchanges-trader)
+[![composer.lock](https://poser.pugx.org/systemfailure/crypto-currency-exchanges-trader/composerlock)](https://packagist.org/packages/systemfailure/crypto-currency-exchanges-trader)
+[![Total Downloads](https://poser.pugx.org/systemfailure/crypto-currency-exchanges-trader/downloads)](https://packagist.org/packages/systemfailure/crypto-currency-exchanges-trader)
+[![Latest Unstable Version](https://poser.pugx.org/systemfailure/crypto-currency-exchanges-trader/v/unstable)](https://packagist.org/packages/systemfailure/crypto-currency-exchanges-trader)
+[![License](https://poser.pugx.org/systemfailure/crypto-currency-exchanges-trader/license)](https://packagist.org/packages/systemfailure/crypto-currency-exchanges-trader)
 # Installation
 ```bash
 composer require systemfailure/crypto-currency-exchanges-trader

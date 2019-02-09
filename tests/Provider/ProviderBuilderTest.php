@@ -11,9 +11,13 @@ use Kefzce\CryptoCurrencyExchanges\Provider\NullProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderBuilder;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
 use function Kefzce\CryptoCurrencyExchanges\removeDirectory;
+use Kefzce\CryptoCurrencyExchanges\Tests\Provider\Stubs\AnotherInvalidProvider;
+use Kefzce\CryptoCurrencyExchanges\Tests\Provider\Stubs\InvalidProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
+/** @noinspection PhpUndefinedClassInspection */
 class ProviderBuilderTest extends TestCase
 {
     /**
@@ -67,11 +71,47 @@ class ProviderBuilderTest extends TestCase
         removeDirectory(sys_get_temp_dir() . '/provider_test');
     }
 
+    /**
+     * @dataProvider incorrectProviderList
+     *
+     * @param $provider
+     */
+    public function testShouldThrowExceptionIfProviderNotRegisterOnContainer($provider): void
+    {
+        $this->expectException(ServiceNotFoundException::class);
+        $containerBuilder = new ContainerBuilder(Environment::create('providertest'));
+
+        $containerBuilder->setCacheDirectoryPath($this->cacheDirectory);
+
+        /** @var ContainerInterface $container */
+        $container = $containerBuilder->build();
+        $container->set(ProviderBuilder::class, new ProviderBuilder($container));
+
+        $builder = $container->get(ProviderBuilder::class);
+        $provider = $builder->build(
+            (string) $provider
+        );
+
+        $this->assertNotEmpty($provider);
+        $this->assertNotInstanceOf(ProviderInterface::class, $provider);
+
+        @unlink(sys_get_temp_dir() . '/provider_test');
+        removeDirectory(sys_get_temp_dir() . '/provider_test');
+    }
+
     /** @noinspection PhpUndefinedClassInspection */
     public function correctProviderList(): ?\Generator
     {
         yield [new NullProvider()];
 
         yield [new AnotherProvider()];
+    }
+
+    /** @noinspection PhpUndefinedClassInspection */
+    public function incorrectProviderList(): ?\Generator
+    {
+        yield [new AnotherInvalidProvider()];
+
+        yield [new InvalidProvider()];
     }
 }

@@ -31,6 +31,16 @@ services:
     tags:
       - { name: exchanges.provider }
 
+  Kefzce\CryptoCurrencyExchanges\Provider\ProviderBuilder:
+    alias: provider.builder
+    public: true
+
+  provider.builder:
+    class: Kefzce\CryptoCurrencyExchanges\Provider\ProviderBuilder
+    public: true
+    arguments:
+      - '@service_container'
+
   Kefzce\CryptoCurrencyExchanges\Provider\AnotherProvider:
     public: true
     tags:

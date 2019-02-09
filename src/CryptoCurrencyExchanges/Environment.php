@@ -95,11 +95,13 @@ final class Environment
      *
      * @return Environment
      */
-    public static function create(string $environment): self
+    public static function create(string $environment, $validate = false): self
     {
         $environment = mb_strtolower($environment);
 
-        self::validateEnvironment($environment);
+        if ($validate) {
+            self::validateEnvironment($environment);
+        }
 
         return new self($environment);
     }

@@ -8,7 +8,19 @@
 ```bash
 composer require systemfailure/crypto-currency-exchanges-trader
 ```
-# Using a single Provider w/o creating Kernel
+
+# Symfony Bundle
+> Not required, you can use it w/o framework
+
+Add folowing lines into config/bundles.php
+```php
+return [
+    // ... Another bundles
+    Kefzce\CryptoCurrencyExchanges\KefzceCryptoCurrencyExchangesBundle::class => ['all' => true],
+];
+```
+# Framework independent usage
+### As the single Provider w/o Kernel
 > Important! Provider should be accessible from outside via [container configuration](https://github.com/kefzce/CryptoCurrencyExchangesTrader/blob/master/src/CryptoCurrencyExchanges/Resources/services.yaml#L5) / [explanation](https://symfony.com/blog/new-in-symfony-3-4-services-are-private-by-default)
 ```php
 <?php
@@ -24,24 +36,33 @@ $computedProvider = $container->get(SomeProvider::class); //SomeProvider instanc
 ```
 
 
-# With ProviderBuilder:
+### With ProviderBuilder:
+> Important! Provider should be accessible from outside via [container configuration](https://github.com/kefzce/CryptoCurrencyExchangesTrader/blob/master/src/CryptoCurrencyExchanges/Resources/services.yaml#L5) / [explanation](https://symfony.com/blog/new-in-symfony-3-4-services-are-private-by-default)
 ```php
 <?php
 include_once __DIR__ . 'vendor/autoload.php'; // boot autoloader
 
-$computedProvider = (new ProviderBuilder())->build(SomeProvider::class); 
+$bootstrap = Bootstrap::withDotEnv(__DIR__) //specify .env folder or use ::withEnvironmentValues() 
+->enableAutoImportsProviders(); // required thing, register all providers into DependencyInjection Container
+$container = $bootstrap->boot(); // fetching container
+/** ProviderBuilder $builder */
+$builder = $container->get(ProviderBuilder::class); // an instance of ProviderBuilder
+
+$computedProvider =  $builder->build(SomeProvider::class); // instance of SomeProvider
 // Same as
-$computedProvider = ProviderBuilder::build(FQCN::class);
+$computedProvider = $builder::build(FQCN::class);
 // $computedProvider variable contains ready to work an instance of required Provider.
+// or even
+$computedProvider = (new ProviderBuilder($container))->build(SomeProvider::class);
 ```
 
 # List of all available Providers:
-> After booting in console mode OR adding KefzceCryptoCurrencyExchangesBundle::class => ['all' => true], into bundles.php (Symfony)
+> Required console mode OR installing via Symfony bundle
 ```bash
 php bin/console providers:list
 ```
 # Search provider by FQCN:
-> After booting in console mode OR adding KefzceCryptoCurrencyExchangesBundle::class => ['all' => true], into bundles.php (Symfony)
+> Required console mode OR installing via Symfony bundle
 
 ```bash
 php bin/console providers:search ProviderName // give some nice output information about provider
@@ -68,7 +89,54 @@ $kernel = (new Kernel($container)) // create kernel and passing container into
     ->enableSentryErrorHandler() // some additional staff which enable sentry error handling(required sentry dsn)
     ->runInConsoleMode(); //booting application into console mode
 ```
-
+# Symfony Usage:
+### Method injection
+```php
+<?php
+class Controller 
+{
+    public function method(SomeProvider $provider)
+    {
+        $provider->doSome(); // where $provider ready to work instance
+    }
+}
+```
+### Constructor injection
+```php
+<?php
+class Service 
+{
+    /** @var ProviderInterface */
+    private $provider;
+    
+    public function __construct(SomeProvider $provider) 
+    {
+        $this->provider = $provider;
+    }
+    
+    public function method()
+    {
+        $this->provider->doSome();
+    }
+}
+```
+### Service Locator
+```php
+<?php
+class Service
+{
+    public function __construct(ContainerInterface $container) 
+    {
+        $provider = $container->get(SomeProvider::class);
+        // or even
+        $provider = $this->get(SomeProvider::class);
+        // same as 
+        $this->container->get(SomeProvider::class);
+        // if you extend AbstractController (please dont do this)
+    }
+}
+```
+### 
 # Run tests
 > All test available in tests folder, run them directly by typing
 ```bash

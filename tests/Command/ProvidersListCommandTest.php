@@ -32,6 +32,6 @@ class ProvidersListCommandTest extends TestCase
 
         $output = $commandTeser->getDisplay();
 
-        $this->assertContains('[OK] You lookup at providers:', $output);
+        $this->assertContains('[OK] You look up at providers ↓', $output);
     }
 }

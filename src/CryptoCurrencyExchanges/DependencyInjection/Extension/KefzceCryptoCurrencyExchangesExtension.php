@@ -23,7 +23,7 @@ final class KefzceCryptoCurrencyExchangesExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+        $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../Resources'));
         $loader->load('config/packages/kefzce_crypto_currency_exchanges.yaml');

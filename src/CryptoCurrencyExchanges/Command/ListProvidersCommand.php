@@ -41,8 +41,15 @@ final class ListProvidersCommand extends Command
         $providers = $this->resolver->getProviders();
         $io->success(
             sprintf(
-                'You lookup at providers: %s',
-                implode(', ', array_map('\get_class', $providers)))
+                'You look up at providers ↓ (%d)',
+            is_countable($providers) ? \count($providers) : 0
+            )
+        );
+        $io->listing(
+            array_map(
+                function ($value): string {
+                    return (new \ReflectionClass($value))->getShortName();
+                }, $providers)
         );
     }
 }

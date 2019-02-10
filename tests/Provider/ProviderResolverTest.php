@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\Tests\Provider;
 
-use Kefzce\CryptoCurrencyExchanges\Provider\AnotherProvider;
+use GuzzleHttp\Client;
+use Kefzce\CryptoCurrencyExchanges\Provider\CoinbaseProvider;
+use Kefzce\CryptoCurrencyExchanges\Provider\HttpClient;
 use Kefzce\CryptoCurrencyExchanges\Provider\NullProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver;
@@ -73,7 +75,7 @@ final class ProviderResolverTest extends TestCase
     {
         yield [new NullProvider()];
 
-        yield [new AnotherProvider()];
+        yield [new CoinbaseProvider(new HttpClient(new Client()))];
     }
 
     /** @noinspection PhpUndefinedClassInspection */

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\DependencyInjection\Compiler;
 
-use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -18,11 +17,11 @@ final class CommandPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has(Application::class)) {
+        if (!$container->has('shell.console')) {
             return;
         }
 
-        $service = $container->findDefinition(Application::class);
+        $service = $container->findDefinition('shell.console');
         $availableCommands = array_keys($container->findTaggedServiceIds('console.command'));
 
         foreach ($availableCommands as $command) {

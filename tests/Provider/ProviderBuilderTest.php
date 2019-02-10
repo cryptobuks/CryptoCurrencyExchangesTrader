@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\Tests\Provider;
 
+use GuzzleHttp\Client;
 use Kefzce\CryptoCurrencyExchanges\DependencyInjection\ContainerBuilder\ContainerBuilder;
 use Kefzce\CryptoCurrencyExchanges\Environment;
-use Kefzce\CryptoCurrencyExchanges\Provider\AnotherProvider;
+use Kefzce\CryptoCurrencyExchanges\Provider\CoinbaseProvider;
+use Kefzce\CryptoCurrencyExchanges\Provider\HttpClient;
 use Kefzce\CryptoCurrencyExchanges\Provider\NullProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderBuilder;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
@@ -104,7 +106,7 @@ class ProviderBuilderTest extends TestCase
     {
         yield [new NullProvider()];
 
-        yield [new AnotherProvider()];
+        yield [new CoinbaseProvider(new HttpClient(new Client()))];
     }
 
     /** @noinspection PhpUndefinedClassInspection */

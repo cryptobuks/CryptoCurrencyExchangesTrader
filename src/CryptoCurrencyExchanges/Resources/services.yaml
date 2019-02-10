@@ -1,53 +1,80 @@
 services:
   _defaults:
-    autowire: true
-    autoconfigure: true
-    public: false
+      autowire: true
+      autoconfigure: true
+      public: false
 
   Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver:
+      public: true
+
+  provider.resolver:
+      class: Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver
+      public: true
 
   Kefzce\CryptoCurrencyExchanges\Fetcher\ProviderExecutor:
+      public: true
+
+  provider.executor:
+      class: Kefzce\CryptoCurrencyExchanges\Fetcher\ProviderExecutor
+      public: true
 
   Symfony\Component\Console\Application:
-
-  Kefzce\CryptoCurrencyExchanges\Command\ListProvidersCommand:
-    arguments:
-      - '@Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver'
-    tags:
-      - { name: 'console.command', command: 'providers:list' }
-
-  Kefzce\CryptoCurrencyExchanges\Command\SearchProvidersCommand:
-    arguments:
-      - '@Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver'
-    tags:
-      - { name: 'console.command', command: 'provider:search' }
+      public: true
 
   shell.console:
-    public: true
-    alias: Symfony\Component\Console\Application
+      alias: Symfony\Component\Console\Application
+      public: true
 
-  Kefzce\CryptoCurrencyExchanges\Provider\NullProvider:
-    public: true
-    tags:
-      - { name: exchanges.provider }
+  Kefzce\CryptoCurrencyExchanges\Command\ListProvidersCommand:
+      arguments:
+        - '@provider.resolver'
+      tags:
+        - { name: 'console.command', command: 'providers:list' }
+
+  Kefzce\CryptoCurrencyExchanges\Command\SearchProvidersCommand:
+      arguments:
+        - '@provider.resolver'
+      tags:
+        - { name: 'console.command', command: 'provider:search' }
 
   Kefzce\CryptoCurrencyExchanges\Provider\ProviderBuilder:
-    alias: provider.builder
-    public: true
+      alias: provider.builder
+      public: true
 
   provider.builder:
-    class: Kefzce\CryptoCurrencyExchanges\Provider\ProviderBuilder
-    public: true
-    arguments:
-      - '@service_container'
-
-  Kefzce\CryptoCurrencyExchanges\Provider\AnotherProvider:
-    public: true
-    tags:
-      - { name: exchanges.provider }
+      class: Kefzce\CryptoCurrencyExchanges\Provider\ProviderBuilder
+      public: true
+      arguments:
+        - '@service_container'
 
   Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder:
 
-#  http.client:
-#    class: '@Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder'
-#    factory:   'Kefzce\CryptoCurrencyExchangesHttp\ClientBuilder:build'
+  Kefzce\CryptoCurrencyExchanges\Provider\NullProvider:
+      public: true
+      tags:
+        - { name: exchanges.provider }
+
+  Kefzce\CryptoCurrencyExchanges\Provider\AnotherProvider:
+      public: true
+      tags:
+        - { name: exchanges.provider }
+
+  http.transport:
+      class: Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder
+      factory: 'Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder:build'
+
+  Kefzce\CryptoCurrencyExchanges\Provider\HttpClient:
+      arguments:
+        - '@http.transport'
+
+  http.client:
+      class: Kefzce\CryptoCurrencyExchanges\Provider\HttpClient
+      arguments:
+        - '@http.transport'
+
+  Kefzce\CryptoCurrencyExchanges\Provider\CoinbaseProvider:
+      arguments:
+        - '@http.client'
+      public: true
+      tags:
+        - { name: exchanges.provider }

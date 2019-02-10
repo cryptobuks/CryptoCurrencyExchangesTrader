@@ -34,10 +34,10 @@ final class Configuration implements ConfigurationInterface
     {
         if (method_exists(TreeBuilder::class, 'getRootNode')) {
             $tb = new TreeBuilder(self::NAME, 'variable');
-            $rootNode = $tb->getRootNode();
+            $tb->getRootNode();
         } else {
             $tb = new TreeBuilder();
-            $rootNode = $tb->root(self::NAME, 'variable');
+            $tb->root(self::NAME, 'variable');
         }
 
         return $tb;

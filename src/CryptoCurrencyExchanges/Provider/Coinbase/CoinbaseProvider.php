@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kefzce\CryptoCurrencyExchanges\Provider;
+namespace Kefzce\CryptoCurrencyExchanges\Provider\Coinbase;
+
+use Kefzce\CryptoCurrencyExchanges\Provider\BaseProvider;
+use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
 
 final class CoinbaseProvider extends BaseProvider implements ProviderInterface
 {

@@ -68,11 +68,11 @@ services:
         - '@http.transport'
 
   http.client:
-      class: Kefzce\CryptoCurrencyExchanges\Provider\HttpClient
+      class: Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\HttpClient
       arguments:
         - '@http.transport'
 
-  Kefzce\CryptoCurrencyExchanges\Provider\CoinbaseProvider:
+  Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\CoinbaseProvider:
       arguments:
         - '@http.client'
       public: true

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Kefzce\CryptoCurrencyExchanges\Provider;
+namespace Kefzce\CryptoCurrencyExchanges\Provider\Coinbase;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
 use Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder;
-use Kefzce\CryptoCurrencyExchanges\Provider\Enum\Coinbase;
+use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Enum\Coinbase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 

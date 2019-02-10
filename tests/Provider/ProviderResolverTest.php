@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kefzce\CryptoCurrencyExchanges\Tests\Provider;
 
 use GuzzleHttp\Client;
-use Kefzce\CryptoCurrencyExchanges\Provider\CoinbaseProvider;
-use Kefzce\CryptoCurrencyExchanges\Provider\HttpClient;
+use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\CoinbaseProvider;
+use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\HttpClient;
 use Kefzce\CryptoCurrencyExchanges\Provider\NullProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver;

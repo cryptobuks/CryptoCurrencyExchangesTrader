@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kefzce\CryptoCurrencyExchanges\Provider\Enum;
+namespace Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Enum;
 
 class Coinbase
 {

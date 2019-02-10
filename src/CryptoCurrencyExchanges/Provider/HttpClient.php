@@ -76,7 +76,7 @@ class HttpClient
         try {
             $response = $this->transport->send($request, $options);
         } catch (RequestException $e) {
-            throw RequestException::wrapException($e);
+            throw RequestException::wrapException($request, $e);
         }
 
         return $response;
@@ -99,7 +99,7 @@ class HttpClient
         // omit two_factor_token
         $data = array_diff_key($params, [Coinbase::TWO_FACTOR_TOKEN => true]);
 
-        if ($data) {
+        if (!empty($data)) {
             $options[RequestOptions::JSON] = $data;
             $body = json_encode($data);
         } else {

@@ -12,7 +12,7 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
     public const PROVIDER_FEES = 'https://support.coinbase.com/customer/portal/articles/2109597-buy-sell-bank-transfer-fees';
 
     /**
-     * @var \GuzzleHttp\Client
+     * @var \Kefzce\CryptoCurrencyExchanges\Provider\HttpClient
      */
     private $client;
 
@@ -38,9 +38,9 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return resource
+     * @return string
      */
-    public function getCurrentUser(array $params = [])
+    public function getCurrentUser(array $params = []): string
     {
         return $this->getAndMapData('/v2/user', $params);
     }

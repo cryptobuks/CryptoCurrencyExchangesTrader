@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\Tests\Provider;
 
-use GuzzleHttp\Client;
-use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\CoinbaseProvider;
-use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\HttpClient;
 use Kefzce\CryptoCurrencyExchanges\Provider\NullProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver;
+use Kefzce\CryptoCurrencyExchanges\Tests\Provider\Stubs\FirstValidProvider;
+use Kefzce\CryptoCurrencyExchanges\Tests\Provider\Stubs\SecondValidProvider;
 use PHPUnit\Framework\TestCase;
 
 /** @noinspection PhpUndefinedClassInspection */
@@ -27,7 +26,7 @@ final class ProviderResolverTest extends TestCase
     /**
      * @dataProvider correctProviders
      *
-     * @param ProviderInterface[] ...$provider
+     * @param ProviderInterface $provider
      */
     public function testCanAddFewProviders($provider): void
     {
@@ -73,9 +72,9 @@ final class ProviderResolverTest extends TestCase
     /** @noinspection PhpUndefinedClassInspection */
     public function correctProviders(): ?\Generator
     {
-        yield [new NullProvider()];
+        yield [new FirstValidProvider()];
 
-        yield [new CoinbaseProvider(new HttpClient(new Client()))];
+        yield [new SecondValidProvider()];
     }
 
     /** @noinspection PhpUndefinedClassInspection */

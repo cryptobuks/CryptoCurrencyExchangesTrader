@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\Tests\Provider;
 
-use GuzzleHttp\Client;
 use Kefzce\CryptoCurrencyExchanges\DependencyInjection\ContainerBuilder\ContainerBuilder;
 use Kefzce\CryptoCurrencyExchanges\Environment;
-use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\CoinbaseProvider;
-use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\HttpClient;
-use Kefzce\CryptoCurrencyExchanges\Provider\NullProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderBuilder;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
 use function Kefzce\CryptoCurrencyExchanges\removeDirectory;
 use Kefzce\CryptoCurrencyExchanges\Tests\Provider\Stubs\AnotherInvalidProvider;
+use Kefzce\CryptoCurrencyExchanges\Tests\Provider\Stubs\FirstValidProvider;
 use Kefzce\CryptoCurrencyExchanges\Tests\Provider\Stubs\InvalidProvider;
+use Kefzce\CryptoCurrencyExchanges\Tests\Provider\Stubs\SecondValidProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -69,8 +67,8 @@ class ProviderBuilderTest extends TestCase
         $this->assertNotEmpty($provider);
         $this->assertInstanceOf(ProviderInterface::class, $provider);
 
-        @unlink(sys_get_temp_dir() . '/provider_test');
-        removeDirectory(sys_get_temp_dir() . '/provider_test');
+        @unlink($this->cacheDirectory);
+        removeDirectory($this->cacheDirectory);
     }
 
     /**
@@ -97,16 +95,16 @@ class ProviderBuilderTest extends TestCase
         $this->assertNotEmpty($provider);
         $this->assertNotInstanceOf(ProviderInterface::class, $provider);
 
-        @unlink(sys_get_temp_dir() . '/provider_test');
-        removeDirectory(sys_get_temp_dir() . '/provider_test');
+        @unlink($this->cacheDirectory);
+        removeDirectory($this->cacheDirectory);
     }
 
     /** @noinspection PhpUndefinedClassInspection */
     public function correctProviderList(): ?\Generator
     {
-        yield [new NullProvider()];
+        yield [new FirstValidProvider()];
 
-        yield [new CoinbaseProvider(new HttpClient(new Client()))];
+        yield [new SecondValidProvider()];
     }
 
     /** @noinspection PhpUndefinedClassInspection */

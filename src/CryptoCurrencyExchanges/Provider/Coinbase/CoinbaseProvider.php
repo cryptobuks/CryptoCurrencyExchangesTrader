@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\Provider\Coinbase;
 
+use Kefzce\CryptoCurrencyExchanges\Mapper\JsonMapper;
+use Kefzce\CryptoCurrencyExchanges\Mapper\UnableToFindResourceException;
 use Kefzce\CryptoCurrencyExchanges\Provider\BaseProvider;
+use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Resource\CurrenciesResource;
+use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Resource\CurrentUserResource;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class CoinbaseProvider extends BaseProvider implements ProviderInterface
 {
@@ -19,47 +24,75 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
      */
     private $client;
 
-    public function __construct(HttpClient $client)
+    /**
+     * @var \Kefzce\CryptoCurrencyExchanges\Mapper\JsonMapper
+     */
+    private $mapper;
+
+    public function __construct(HttpClient $client, JsonMapper $mapper)
     {
         $this->client = $client;
+        $this->mapper = $mapper;
     }
 
     /**
-     * @param array $params
+     * @param array  $params
+     * @param string $classMap
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return string
+     * @return array|mixed|object|void
      */
-    public function getCurrencies(array $params = []): string
+    public function getCurrencies(array $params = [], $classMap = CurrenciesResource::class)
     {
-        return $this->getAndMapData('/v2/currencies', $params);
+        return $this->getAndMapData('/v2/currencies', $params, $classMap);
     }
 
     /**
-     * @param array $params
+     * @param array  $params
+     * @param string $classMap
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return string
+     * @return array|mixed|object|void
      */
-    public function getCurrentUser(array $params = []): string
+    public function getCurrentUser(array $params = [], $classMap = CurrentUserResource::class)
     {
-        return $this->getAndMapData('/v2/user', $params);
+        return $this->getAndMapData('/v2/user', $params, $classMap, );
     }
 
     /**
      * @param $path
-     * @param array $params
+     * @param array  $params
+     * @param string $classMap
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Kefzce\CryptoCurrencyExchanges\Mapper\UnableToFindResourceException
      *
-     * @return string
+     * @return array|mixed|object|void
      */
-    private function getAndMapData($path, array $params): string
+    private function getAndMapData($path, array $params, string $classMap)
     {
-        $response = $this->client->request('GET', $path, $params);
+        $request = $this->client->request('GET', $path, $params);
 
-        return $response->getBody()->getContents();
+        $response = $request->getBody()->getContents();
+
+        $bag = new ParameterBag(
+            json_decode($response, true)['data']
+        );
+
+        if (!class_exists($classMap)) {
+            throw  new UnableToFindResourceException(sprintf(
+                'Unable to find provided resource "%s"',
+                $classMap
+            ));
+        }
+
+        $object = $this->mapper->convert(
+            $bag->all(),
+            $classMap
+        );
+
+        return $object;
     }
 }

@@ -11,13 +11,6 @@ services:
       class: Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver
       public: true
 
-  Kefzce\CryptoCurrencyExchanges\Fetcher\ProviderExecutor:
-      public: true
-
-  provider.executor:
-      class: Kefzce\CryptoCurrencyExchanges\Fetcher\ProviderExecutor
-      public: true
-
   Symfony\Component\Console\Application:
       public: true
 
@@ -67,9 +60,25 @@ services:
       arguments:
         - '@http.transport'
 
+  Kefzce\CryptoCurrencyExchanges\Mapper\JsonMapper:
+      public: false
+
+  Kefzce\CryptoCurrencyExchanges\Validator\Validator:
+      public: false
+
+  custom.validator:
+      class: Kefzce\CryptoCurrencyExchanges\Validator\Validator
+      factory: 'Kefzce\CryptoCurrencyExchanges\Validator\Validator:create'
+
+  json.mapper:
+      class: Kefzce\CryptoCurrencyExchanges\Mapper\JsonMapper
+      arguments:
+        - '@custom.validator'
+
   Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\CoinbaseProvider:
       arguments:
         - '@http.client'
+        - '@json.mapper'
       public: true
       tags:
         - { name: exchanges.provider }

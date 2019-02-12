@@ -30,9 +30,10 @@ return [
 // import namespace
 use Kefzce\CryptoCurrencyExchanges\Bootstrap;
 
-include_once __DIR__ . 'vendor/autoload.php'; // boot autoloader
+$loader = require __DIR__.'/../vendor/autoload.php'; // boot autoloader
 
 $bootstrap = Bootstrap::withDotEnv(__DIR__) //specify .env folder or use ::withEnvironmentValues() 
+->registerLoader($loader) // Annotation registry needs specify composer autoload
 ->enableAutoImportsProviders(); // required thing, register all providers into DependencyInjection Container
 $container = $bootstrap->boot(); // fetching container
 $computedProvider = $container->get(SomeProvider::class); //SomeProvider instance
@@ -43,9 +44,10 @@ $computedProvider = $container->get(SomeProvider::class); //SomeProvider instanc
 > Important! Provider should be accessible from outside via [container configuration](https://github.com/kefzce/CryptoCurrencyExchangesTrader/blob/master/src/CryptoCurrencyExchanges/Resources/services.yaml#L5) / [explanation](https://symfony.com/blog/new-in-symfony-3-4-services-are-private-by-default)
 ```php
 <?php
-include_once __DIR__ . 'vendor/autoload.php'; // boot autoloader
+$loader = require __DIR__.'/../vendor/autoload.php'; // boot autoloader
 
-$bootstrap = Bootstrap::withDotEnv(__DIR__) //specify .env folder or use ::withEnvironmentValues() 
+$bootstrap = Bootstrap::withDotEnv(__DIR__) //specify .env folder or use ::withEnvironmentValues()
+->registerLoader($loader) // Annotation registry needs specify composer autoload 
 ->enableAutoImportsProviders(); // required thing, register all providers into DependencyInjection Container
 $container = $bootstrap->boot(); // fetching container
 /** ProviderBuilder $builder */
@@ -78,9 +80,10 @@ php bin/console providers:search ProviderName // give some nice output informati
 use Kefzce\CryptoCurrencyExchanges\Bootstrap;
 use Kefzce\CryptoCurrencyExchanges\Kernel;
 
-include_once __DIR__ . 'vendor/autoload.php'; // boot autoloader
+$loader = require __DIR__.'/../vendor/autoload.php'; // boot autoloader
 
-$bootstrap = Bootstrap::withDotEnv(__DIR__) //specify .env folder or use ::withEnvironmentValues() 
+$bootstrap = Bootstrap::withDotEnv(__DIR__)//specify .env folder or use ::withEnvironmentValues() 
+->registerLoader($loader) // Annotation registry needs specify composer autoload
 ->registerConsoleCommands() //if you wanna boot into console mode provide a few commands
 ->enableAutoImportsProviders() // required thing, register all providers into DependencyInjection Container
 ->addParameters([

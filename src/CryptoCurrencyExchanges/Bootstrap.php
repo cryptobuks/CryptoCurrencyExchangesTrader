@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Dotenv\Dotenv;
 use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Compiler\CommandPass;
 use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Compiler\ProviderPass;
@@ -129,6 +130,18 @@ final class Bootstrap
             $parameters = include $parametersPath;
             $this->containerBuilder->addParameters($parameters);
         }
+
+        return $this;
+    }
+
+    /**
+     * @param $loader
+     *
+     * @return $this
+     */
+    public function registerLoader($loader): self
+    {
+        AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
         return $this;
     }

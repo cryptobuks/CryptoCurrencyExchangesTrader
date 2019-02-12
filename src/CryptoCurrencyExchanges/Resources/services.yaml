@@ -54,11 +54,6 @@ services:
       tags:
         - { name: exchanges.provider }
 
-  Kefzce\CryptoCurrencyExchanges\Provider\AnotherProvider:
-      public: true
-      tags:
-        - { name: exchanges.provider }
-
   http.transport:
       class: Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder
       factory: 'Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder:build'

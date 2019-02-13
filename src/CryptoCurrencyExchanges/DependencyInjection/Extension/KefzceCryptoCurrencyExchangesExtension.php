@@ -41,7 +41,7 @@ final class KefzceCryptoCurrencyExchangesExtension extends Extension
 
         return new Configuration(
             $container->hasParameter('kernel.debug') ?
-                $container->getParameter('kernel.debug') : null
+                $container->getParameter('kernel.debug') : false
         );
     }
 }

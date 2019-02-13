@@ -18,9 +18,9 @@ final class Configuration implements ConfigurationInterface
     private $debug;
 
     /**
-     * @param string|null $debug
+     * @param bool $debug
      */
-    public function __construct($debug = null)
+    public function __construct(bool $debug = false)
     {
         $this->debug = $debug;
     }
@@ -47,7 +47,7 @@ final class Configuration implements ConfigurationInterface
      * @internal
      *
      * @param TreeBuilder $builder
-     * @param string|null $name
+     * @param string      $name
      * @param string      $type
      *
      * @return ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition

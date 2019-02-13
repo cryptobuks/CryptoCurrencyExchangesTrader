@@ -32,8 +32,8 @@ class BaseProvider
         $constantMap = implode(
             ', ',
             array_map(
-                function ($v, $k) {
-                    return sprintf('%s="%s"', $k, $v);
+                function (string $v, string $k): string {
+                    return sprintf('%s="%s"', (string) $k, (string) $v);
                 },
                 $class->getConstants(),
                 array_keys($class->getConstants())

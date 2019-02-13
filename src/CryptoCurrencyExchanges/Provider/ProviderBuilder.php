@@ -25,7 +25,9 @@ final class ProviderBuilder implements ProviderBuilderInterface
     /**
      * @param string $className
      *
-     * @return ProviderInterface
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
+     *
+     * @return ProviderInterface|mixed
      */
     public function build(string $className)
     {

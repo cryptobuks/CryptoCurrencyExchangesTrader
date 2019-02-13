@@ -39,6 +39,7 @@ final class JsonMapper implements MapperInterface
         $serializer = new Serializer([$objectNormalizer], [new JsonEncoder()]);
         $data = $serializer->denormalize($data, $className);
 
+        /** @var \Symfony\Component\Validator\ConstraintViolationList $errors */
         $errors = $this->validator->validate($data);
 
         if (\count($errors) > 0) {
@@ -49,7 +50,9 @@ final class JsonMapper implements MapperInterface
                 );
             }
 
-            throw new ValidatorException($errorsMessage);
+            if (!empty($errorsMessage)) {
+                throw new ValidatorException((string) $errorsMessage);
+            }
         }
 
         return $data;

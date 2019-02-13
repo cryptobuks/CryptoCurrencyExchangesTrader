@@ -99,9 +99,9 @@ final class SearchProvidersCommand extends Command
 
         $key = array_search($needle, $haystackProviders, true);
 
-        /** @var ProviderInterface|\Kefzce\Command\Configurable $computedProvider */
+        /** @var ProviderInterface $computedProvider */
         $computedProvider = $haystack[$key];
 
-        return $computedProvider->describe();
+        return $computedProvider->describe() ?? '';
     }
 }

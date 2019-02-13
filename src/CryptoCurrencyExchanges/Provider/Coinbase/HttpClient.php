@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 class HttpClient
 {
     /**
-     * @var \GuzzleHttp\ClientInterface |\GuzzleHttp\Client
+     * @var \GuzzleHttp\ClientInterface
      */
     private $transport;
 
@@ -39,15 +39,15 @@ class HttpClient
     }
 
     /**
-     * @param $method
-     * @param $path
-     * @param array $params
+     * @param string $method
+     * @param string $path
+     * @param array  $params
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function request($method, $path, array $params = []): ResponseInterface
+    public function request(string $method, string $path, array $params = []): ResponseInterface
     {
         $request = new Request(
             $method,
@@ -83,13 +83,13 @@ class HttpClient
     }
 
     /**
-     * @param $method
-     * @param $path
-     * @param array $params
+     * @param string $method
+     * @param string $path
+     * @param array  $params
      *
      * @return array
      */
-    private function prepareOptions($method, $path, array $params = []): array
+    private function prepareOptions(string $method, string $path, array $params = []): array
     {
         $options = [];
 
@@ -126,14 +126,15 @@ class HttpClient
     }
 
     /**
-     * @param $method
-     * @param $path
-     * @param $body
+     * @param string $method
+     * @param string $path
+     * @param string $body
      *
      * @return array
      */
-    private function getRequestHeaders($method, $path, $body): array
+    private function getRequestHeaders(string $method, string $path, string $body): array
     {
+        // @todo redesign passing parameters
         $timestamp = time();
         $signature = hash_hmac(
             'sha256',

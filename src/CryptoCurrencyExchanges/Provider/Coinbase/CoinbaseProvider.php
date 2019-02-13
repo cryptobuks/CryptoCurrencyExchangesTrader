@@ -62,7 +62,7 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @param array  $params
      * @param string $classMap
      *
@@ -71,7 +71,7 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
      *
      * @return array|mixed|object|void
      */
-    private function getAndMapData($path, array $params, string $classMap)
+    private function getAndMapData(string $path, array $params, string $classMap)
     {
         $request = $this->client->request('GET', $path, $params);
 

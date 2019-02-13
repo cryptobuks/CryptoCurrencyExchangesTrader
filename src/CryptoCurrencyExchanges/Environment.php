@@ -90,8 +90,7 @@ final class Environment
      * Creating the specified environment.
      *
      * @param string $environment
-     *
-     * @throws \LogicException The value of the environment is not specified, or is incorrect
+     * @param bool   $validate
      *
      * @return Environment
      */

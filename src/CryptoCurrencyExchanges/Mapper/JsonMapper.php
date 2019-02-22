@@ -24,6 +24,14 @@ final class JsonMapper implements MapperInterface
         $this->validator = $validator;
     }
 
+    /**
+     * @param array  $data
+     * @param string $className
+     *
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     *
+     * @return array|mixed|object|void
+     */
     public function convert(array $data, string $className)
     {
         if (!class_exists($className)) {
@@ -39,12 +47,25 @@ final class JsonMapper implements MapperInterface
         $serializer = new Serializer([$objectNormalizer], [new JsonEncoder()]);
         $data = $serializer->denormalize($data, $className);
 
+        return $this->verifyObjectIsOk($data);
+    }
+
+    /**
+     * @param object $data
+     *
+     * @throws \Symfony\Component\Validator\Exception\ValidatorException
+     *
+     * @return object|mixed
+     */
+    private function verifyObjectIsOk(object $data)
+    {
         /** @var \Symfony\Component\Validator\ConstraintViolationList $errors */
         $errors = $this->validator->validate($data);
 
         if (\count($errors) > 0) {
             foreach ($errors as $error) {
-                $errorsMessage = sprintf('"%s" %s',
+                $errorsMessage = sprintf(
+                    '"%s" %s',
                     $error->getPropertyPath(),
                     $error->getMessage()
                 );

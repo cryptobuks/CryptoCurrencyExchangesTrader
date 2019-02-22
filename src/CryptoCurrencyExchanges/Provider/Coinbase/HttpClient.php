@@ -25,6 +25,9 @@ class HttpClient
      */
     private $caBundle;
 
+    /**
+     * @param \GuzzleHttp\ClientInterface $transport
+     */
     public function __construct(ClientInterface $transport)
     {
         $this->transport = $transport;
@@ -86,6 +89,7 @@ class HttpClient
      * @param string $method
      * @param string $path
      * @param array  $params
+     * @psalm-suppress MixedAssignment
      *
      * @return array
      */
@@ -136,14 +140,16 @@ class HttpClient
     {
         // @todo redesign passing parameters
         $timestamp = time();
+        $apiKey = getenv('COINBASE_API_KEY') ?: '';
+        $apiSecret = getenv('COINBASE_API_SECRET') ?: '';
         $signature = hash_hmac(
             'sha256',
             $timestamp . $method . $path . $body,
-            getenv('COINBASE_API_SECRET')
+            $apiSecret
         );
 
         return [
-            'CB-ACCESS-KEY' => getenv('COINBASE_API_KEY'),
+            'CB-ACCESS-KEY' => $apiKey,
             'CB-ACCESS-SIGN' => $signature,
             'CB-ACCESS-TIMESTAMP' => $timestamp,
         ];

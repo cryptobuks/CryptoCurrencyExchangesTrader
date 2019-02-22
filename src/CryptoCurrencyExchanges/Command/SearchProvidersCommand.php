@@ -40,10 +40,18 @@ final class SearchProvidersCommand extends Command
         parent::configure();
     }
 
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @psalm-suppress InvalidCast
+     * @psalm-suppress MixedAssignment
+     *
+     * @return int|void|null
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $computedArgument = $input->getArgument('provider');
+        $computedArgument = (string) $input->getArgument('provider');
 
         $candidates = [];
 
@@ -75,11 +83,12 @@ final class SearchProvidersCommand extends Command
 
     /**
      * @param string $parsedProvider
-     * @param $computedArgument
+     * @param string $computedArgument
+     * @psalm-suppress MixedArgument
      *
      * @return bool
      */
-    private function checkTypos(string $parsedProvider, $computedArgument): bool
+    private function checkTypos(string $parsedProvider, string $computedArgument): bool
     {
         return false !== mb_strpos($parsedProvider, $computedArgument) || levenshtein(
                 (string) $computedArgument,
@@ -89,11 +98,14 @@ final class SearchProvidersCommand extends Command
 
     /**
      * @param string $needle
-     * @param $haystack
+     * @param array  $haystack
+     * @psalm-suppress MixedArrayAccess
+     * @psalm-suppress MixedAssignment
+     * @psalm-suppress PossiblyInvalidArrayOffset
      *
      * @return string
      */
-    private function providePayload(string $needle, $haystack): string
+    private function providePayload(string $needle, array $haystack): string
     {
         $haystackProviders = array_map('strval', $haystack);
 

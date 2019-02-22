@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges;
 
+use Composer\Autoload\ClassLoader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Dotenv\Dotenv;
 use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Compiler\CommandPass;
@@ -121,6 +122,7 @@ final class Bootstrap
 
     /**
      * @param string $parametersPath
+     * @psalm-suppress MixedAssignment
      *
      * @return Bootstrap
      */
@@ -135,12 +137,14 @@ final class Bootstrap
     }
 
     /**
-     * @param $loader
+     * @param ClassLoader $loader
+     * @psalm-suppress DeprecatedMethod This method is deprecated and will be removed in doctrine/annotations 2.0
      *
      * @return $this
      */
-    public function registerLoader($loader): self
+    public function registerLoader(ClassLoader $loader): self
     {
+        /* @noinspection   PhpDeprecationInspection */
         AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
         return $this;

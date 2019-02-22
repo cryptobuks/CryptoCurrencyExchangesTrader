@@ -25,7 +25,7 @@ final class CommandPass implements CompilerPassInterface
         $availableCommands = array_keys($container->findTaggedServiceIds('console.command'));
 
         foreach ($availableCommands as $command) {
-            $service->addMethodCall('add', [new Reference($command)]);
+            $service->addMethodCall('add', [new Reference((string) $command)]);
         }
     }
 }

@@ -10,6 +10,7 @@ use Kefzce\CryptoCurrencyExchanges\Provider\BaseProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Resource\CurrenciesResource;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Resource\CurrentUserResource;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class CoinbaseProvider extends BaseProvider implements ProviderInterface
@@ -29,6 +30,10 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
      */
     private $mapper;
 
+    /**
+     * @param \Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\HttpClient $client
+     * @param \Kefzce\CryptoCurrencyExchanges\Mapper\JsonMapper            $mapper
+     */
     public function __construct(HttpClient $client, JsonMapper $mapper)
     {
         $this->client = $client;
@@ -40,6 +45,7 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
      * @param string $classMap
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      *
      * @return array|mixed|object|void
      */
@@ -53,12 +59,13 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
      * @param string $classMap
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      *
      * @return array|mixed|object|void
      */
     public function getCurrentUser(array $params = [], $classMap = CurrentUserResource::class)
     {
-        return $this->getAndMapData('/v2/user', $params, $classMap, );
+        return $this->getAndMapData('/v2/user', $params, $classMap);
     }
 
     /**
@@ -66,20 +73,20 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
      * @param array  $params
      * @param string $classMap
      *
+     * @psalm-suppress MixedAssignment
+     *
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Kefzce\CryptoCurrencyExchanges\Mapper\UnableToFindResourceException
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws \Safe\Exceptions\JsonException
      *
-     * @return array|mixed|object|void
+     * @return array|mixed|object
      */
     private function getAndMapData(string $path, array $params, string $classMap)
     {
         $request = $this->client->request('GET', $path, $params);
 
-        $response = $request->getBody()->getContents();
-
-        $bag = new ParameterBag(
-            json_decode($response, true)['data']
-        );
+        $bag = $this->decodeAndReturnBag($request);
 
         if (!class_exists($classMap)) {
             throw  new UnableToFindResourceException(sprintf(
@@ -94,5 +101,24 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
         );
 
         return $object;
+    }
+
+    /**
+     * @param \Psr\Http\Message\ResponseInterface $request
+     *
+     * @throws \Safe\Exceptions\JsonException
+     *
+     * @psalm-suppress MixedAssignment
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedArrayAccess
+     *
+     * @return \Symfony\Component\HttpFoundation\ParameterBag
+     */
+    private function decodeAndReturnBag(ResponseInterface $request): ParameterBag
+    {
+        $response = $request->getBody()->getContents();
+        $rawData = \Safe\json_decode($response, true);
+
+        return new ParameterBag($rawData['data']);
     }
 }

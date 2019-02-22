@@ -31,10 +31,6 @@ final class ProviderBuilder implements ProviderBuilderInterface
      */
     public function build(string $className)
     {
-        if (null === self::$container) {
-            return;
-        }
-
         if (!self::$container->has($className)) {
             throw new ServiceNotFoundException($className);
         }

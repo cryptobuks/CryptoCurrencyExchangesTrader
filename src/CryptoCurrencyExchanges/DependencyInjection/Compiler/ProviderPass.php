@@ -26,7 +26,7 @@ final class ProviderPass implements CompilerPassInterface
         $availableProviders = array_keys($container->findTaggedServiceIds(ProviderInterface::SERVICE_TAG));
 
         foreach ($availableProviders as $provider) {
-            $resolverService->addMethodCall('addProvider', [new Reference($provider)]);
+            $resolverService->addMethodCall('addProvider', [new Reference((string) $provider)]);
         }
     }
 }

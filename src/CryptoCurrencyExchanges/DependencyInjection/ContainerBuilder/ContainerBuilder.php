@@ -68,7 +68,7 @@ final class ContainerBuilder
     }
 
     /**
-     * @param CompilerPassInterface ...$compilerPasses
+     * @param \Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface ...$compilerPasses
      */
     public function addCompilerPasses(CompilerPassInterface ...$compilerPasses): void
     {
@@ -78,6 +78,8 @@ final class ContainerBuilder
     }
 
     /**
+     * @psalm-suppress MixedAssignment
+     *
      * @param array $parameters
      */
     public function addParameters(array $parameters): void
@@ -88,6 +90,9 @@ final class ContainerBuilder
     }
 
     /**
+     * @psalm-suppress MixedAssignment
+     * @psalm-suppress MixedTypeCoercion
+     *
      * @return ContainerInterface
      */
     public function build(): ContainerInterface

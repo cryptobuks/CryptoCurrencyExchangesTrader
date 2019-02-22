@@ -19,6 +19,9 @@ final class KefzceCryptoCurrencyExchangesExtension extends Extension
      * @param array            $configs
      * @param ContainerBuilder $container
      *
+     * @psalm-suppress MixedAssignment
+     * @psalm-suppress MixedTypeCoercion
+     *
      * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
@@ -34,14 +37,22 @@ final class KefzceCryptoCurrencyExchangesExtension extends Extension
         }
     }
 
+    /**
+     * @param array                                                   $config
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @psalm-suppress MixedAssignment
+     *
+     * @throws \ReflectionException
+     *
+     * @return \Kefzce\CryptoCurrencyExchanges\DependencyInjection\Configuration
+     */
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration
     {
         $rc = new \ReflectionClass(Configuration::class);
         $container->addResource(new FileResource($rc->getFileName()));
 
-        return new Configuration(
-            $container->hasParameter('kernel.debug') ?
-                $container->getParameter('kernel.debug') : false
-        );
+        $debug = $container->hasParameter('kernel.debug') ? $container->getParameter('kernel.debug') : false;
+
+        return new Configuration((bool) $debug);
     }
 }

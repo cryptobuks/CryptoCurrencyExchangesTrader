@@ -48,6 +48,7 @@ final class Kernel
     public function runInConsoleMode(): void
     {
         if ($this->container->has('shell.console')) {
+            /** @var \Symfony\Component\Console\Application $application */
             $application = $this->container->get('shell.console');
             $application->run();
         }
@@ -55,8 +56,11 @@ final class Kernel
 
     /**
      * @param string $service
+     * @psalm-suppress MixedAssignment
      *
      * @return object
+     *
+     * @deprecated since 1.0
      */
     public function getKernelContainerService(string $service): object
     {
@@ -67,8 +71,11 @@ final class Kernel
 
     /**
      * @param string $service
+     * @psalm-suppress MixedAssignment
      *
      * @return mixed
+     *
+     * @deprecated since 1.0
      */
     public function getKernelParameterService(string $service)
     {

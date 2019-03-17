@@ -46,6 +46,7 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws \Safe\Exceptions\JsonException
      *
      * @return array|mixed|object|void
      */
@@ -60,6 +61,7 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws \Safe\Exceptions\JsonException
      *
      * @return array|mixed|object|void
      */

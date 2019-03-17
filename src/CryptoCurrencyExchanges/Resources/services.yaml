@@ -60,25 +60,30 @@ services:
       arguments:
         - '@http.transport'
 
-  Kefzce\CryptoCurrencyExchanges\Mapper\JsonMapper:
-      public: false
-
   Kefzce\CryptoCurrencyExchanges\Validator\Validator:
       public: false
+
+  Kefzce\CryptoCurrencyExchanges\Converter\SerializerFactory:
+    public: false
 
   custom.validator:
       class: Kefzce\CryptoCurrencyExchanges\Validator\Validator
       factory: 'Kefzce\CryptoCurrencyExchanges\Validator\Validator:create'
 
-  json.mapper:
-      class: Kefzce\CryptoCurrencyExchanges\Mapper\JsonMapper
+  custom.serializer:
+      class: Kefzce\CryptoCurrencyExchanges\Converter\SerializerFactory
+      factory: 'Kefzce\CryptoCurrencyExchanges\Converter\SerializerFactory:createSerializer'
+
+  object.converter:
+      class: Kefzce\CryptoCurrencyExchanges\Converter\ObjectConverter
       arguments:
+        - "@=container.has('serializer') ? service('serializer') : service('custom.serializer')"
         - "@=container.has('validator') ? service('validator') : service('custom.validator')"
 
   Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\CoinbaseProvider:
       arguments:
         - '@http.client'
-        - '@json.mapper'
+        - '@object.converter'
       public: true
       tags:
         - { name: exchanges.provider }

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\Provider\Coinbase;
 
-use Kefzce\CryptoCurrencyExchanges\Mapper\JsonMapper;
-use Kefzce\CryptoCurrencyExchanges\Mapper\UnableToFindResourceException;
+use Kefzce\CryptoCurrencyExchanges\Converter\ObjectConverter;
 use Kefzce\CryptoCurrencyExchanges\Provider\BaseProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Resource\CurrenciesResource;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Resource\CurrentUserResource;
@@ -26,18 +25,18 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
     private $client;
 
     /**
-     * @var \Kefzce\CryptoCurrencyExchanges\Mapper\JsonMapper
+     * @var \Kefzce\CryptoCurrencyExchanges\Converter\ObjectConverter
      */
-    private $mapper;
+    private $converter;
 
     /**
      * @param \Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\HttpClient $client
-     * @param \Kefzce\CryptoCurrencyExchanges\Mapper\JsonMapper            $mapper
+     * @param \Kefzce\CryptoCurrencyExchanges\Converter\ObjectConverter    $objectConverter
      */
-    public function __construct(HttpClient $client, JsonMapper $mapper)
+    public function __construct(HttpClient $client, ObjectConverter $objectConverter)
     {
         $this->client = $client;
-        $this->mapper = $mapper;
+        $this->converter = $objectConverter;
     }
 
     /**
@@ -78,7 +77,7 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
      * @psalm-suppress MixedAssignment
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Kefzce\CryptoCurrencyExchanges\Mapper\UnableToFindResourceException
+     * @throws \Kefzce\CryptoCurrencyExchanges\Converter\UnableToFindResourceException
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      * @throws \Safe\Exceptions\JsonException
      *
@@ -90,14 +89,7 @@ final class CoinbaseProvider extends BaseProvider implements ProviderInterface
 
         $bag = $this->decodeAndReturnBag($request);
 
-        if (!class_exists($classMap)) {
-            throw  new UnableToFindResourceException(sprintf(
-                'Unable to find provided resource "%s"',
-                $classMap
-            ));
-        }
-
-        $object = $this->mapper->convert(
+        $object = $this->converter->convert(
             $bag->all(),
             $classMap
         );

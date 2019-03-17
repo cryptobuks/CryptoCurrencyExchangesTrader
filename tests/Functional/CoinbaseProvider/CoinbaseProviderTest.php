@@ -8,7 +8,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Kefzce\CryptoCurrencyExchanges\Mapper\JsonMapper;
+use Kefzce\CryptoCurrencyExchanges\Converter\ObjectConverter;
+use Kefzce\CryptoCurrencyExchanges\Converter\SerializerFactory;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\CoinbaseProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\HttpClient;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Resource\Country;
@@ -39,7 +40,8 @@ class CoinbaseProviderTest extends TestCase
         $this->provider = new CoinbaseProvider(
             new HttpClient(
                 $transport
-            ), new JsonMapper(
+            ), new ObjectConverter(
+                SerializerFactory::createSerializer(),
                 Validation::createValidator()
             )
         );

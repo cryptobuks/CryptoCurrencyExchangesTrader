@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges;
 
+use Exception;
+use function Sentry\init;
+use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class Kernel
@@ -29,18 +32,18 @@ final class Kernel
     public function enableSentryErrorHandler(string $dsn = null): self
     {
         $dsn = $dsn ?? getenv('SENTRY_DSN');
-        \Sentry\init(['dsn' => $dsn]);
+        init(['dsn' => $dsn]);
 
         return $this;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function runInConsoleMode(): void
     {
         if ($this->container->has('shell.console')) {
-            /** @var \Symfony\Component\Console\Application $application */
+            /** @var Application $application */
             $application = $this->container->get('shell.console');
             $application->run();
         }

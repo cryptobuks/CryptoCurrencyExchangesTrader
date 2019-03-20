@@ -9,6 +9,7 @@ use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Extension\KefzceCryptoCur
 use Kefzce\CryptoCurrencyExchanges\Environment;
 use function Kefzce\CryptoCurrencyExchanges\removeDirectory;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class BootstrapTest extends TestCase
 {
@@ -39,7 +40,7 @@ class BootstrapTest extends TestCase
         $bootstrap->useCustomCacheDirectory($this->cacheDirectory);
         $bootstrap->addExtension(new KefzceCryptoCurrencyExchangesExtension());
         $bootstrap->addParameters(['qwerty' => 1]);
-        /** @var \Symfony\Component\DependencyInjection\ContainerInterface $container */
+        /** @var ContainerInterface $container */
         $container = $bootstrap->boot();
         $this->assertTrue($container->hasParameter('qwerty'));
         $this->assertEquals(1, $container->getParameter('qwerty'));

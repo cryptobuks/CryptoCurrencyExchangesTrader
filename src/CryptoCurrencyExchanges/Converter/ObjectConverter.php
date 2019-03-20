@@ -13,12 +13,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class ObjectConverter implements ConverterInterface
 {
     /**
-     * @var \Symfony\Component\Validator\Validator\ValidatorInterface
+     * @var ValidatorInterface
      */
     private $validator;
 
     /**
-     * @var \Symfony\Component\Serializer\SerializerInterface
+     * @var SerializerInterface
      */
     private $serializer;
 
@@ -32,7 +32,7 @@ final class ObjectConverter implements ConverterInterface
      * @param array  $data
      * @param string $className
      *
-     * @throws \Kefzce\CryptoCurrencyExchanges\Converter\UnableToFindResourceException
+     * @throws UnableToFindResourceException
      *
      * @return array|mixed|object|void
      */
@@ -57,13 +57,13 @@ final class ObjectConverter implements ConverterInterface
     /**
      * @param mixed $data
      *
-     * @throws \Symfony\Component\Validator\Exception\ValidatorException
+     * @throws ValidatorException
      *
      * @return mixed
      */
     private function verifyObjectIsOk($data)
     {
-        /** @var \Symfony\Component\Validator\ConstraintViolationList $errors */
+        /** @var ConstraintViolationList $errors */
         $errors = $this->validator->validate($data);
 
         try {
@@ -76,9 +76,9 @@ final class ObjectConverter implements ConverterInterface
     }
 
     /**
-     * @param \Symfony\Component\Validator\ConstraintViolationList $errors
+     * @param ConstraintViolationList $errors
      *
-     * @throws \Symfony\Component\Validator\Exception\ValidatorException
+     * @throws ValidatorException
      */
     private function assertValid(ConstraintViolationList $errors): void
     {

@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class Validator
 {
     /**
-     * @return \Symfony\Component\Validator\Validator\ValidatorInterface
+     * @return ValidatorInterface
      */
     public static function create(): ValidatorInterface
     {

@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class SerializerFactory
 {
     /**
-     * @return \Symfony\Component\Serializer\SerializerInterface
+     * @return SerializerInterface
      */
     public static function createSerializer(): SerializerInterface
     {

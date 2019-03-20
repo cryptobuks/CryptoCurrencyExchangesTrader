@@ -9,6 +9,8 @@ use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Extension\KefzceCryptoCur
 use Kefzce\CryptoCurrencyExchanges\Kernel;
 use function Kefzce\CryptoCurrencyExchanges\removeDirectory;
 use PHPUnit\Framework\TestCase;
+use stdClass;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class KernelTest extends TestCase
 {
@@ -23,7 +25,7 @@ class KernelTest extends TestCase
     private $kernel;
 
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var ContainerInterface
      */
     private $container;
 
@@ -41,7 +43,7 @@ class KernelTest extends TestCase
         $bootstrap->addExtension(new KefzceCryptoCurrencyExchangesExtension());
         $bootstrap->provideParametersPath(__DIR__ . 'Stubs/parameters.php');
 
-        $bootstrap->addParameters(['std' => new \stdClass()]);
+        $bootstrap->addParameters(['std' => new stdClass()]);
 
         $this->container = $bootstrap->boot();
 
@@ -65,7 +67,7 @@ class KernelTest extends TestCase
 
         $param = $this->kernel->getKernelParameterService('std');
 
-        $this->assertInstanceOf(\stdClass::class, $param);
+        $this->assertInstanceOf(stdClass::class, $param);
         $this->assertEquals(getenv('APP_ENVIRONMENT'), $this->container->getParameter('ccet_environment'));
     }
 }

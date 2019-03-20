@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\Provider;
 
+use ReflectionClass;
+use ReflectionException;
+
 class BaseProvider
 {
     /**
@@ -12,27 +15,27 @@ class BaseProvider
      *
      * @see {\App\Command\SearchProvidersCommand::execute}
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      *
      * @return string
      */
     public function __toString(): string
     {
-        return (new \ReflectionClass(static::class))->getShortName();
+        return (new ReflectionClass(static::class))->getShortName();
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      *
      * @return string An Available provider describe string
      */
     public function describe(): string
     {
-        $class = new \ReflectionClass(static::class);
+        $class = new ReflectionClass(static::class);
         $constantMap = implode(
             ', ',
             array_map(
-                function (string $v, string $k): string {
+                static function (string $v, string $k): string {
                     return sprintf('%s="%s"', (string) $k, (string) $v);
                 },
                 $class->getConstants(),

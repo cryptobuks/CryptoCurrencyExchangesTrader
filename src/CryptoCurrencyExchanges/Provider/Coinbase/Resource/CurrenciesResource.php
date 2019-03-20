@@ -6,4 +6,8 @@ namespace Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Resource;
 
 final class CurrenciesResource
 {
+    /**
+     * @var array[]
+     */
+    public $currencies;
 }

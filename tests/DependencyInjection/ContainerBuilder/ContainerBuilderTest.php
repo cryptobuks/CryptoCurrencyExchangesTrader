@@ -11,6 +11,7 @@ use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Extension\KefzceCryptoCur
 use Kefzce\CryptoCurrencyExchanges\Environment;
 use function Kefzce\CryptoCurrencyExchanges\removeDirectory;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class ContainerBuilderTest extends TestCase
@@ -91,7 +92,7 @@ final class ContainerBuilderTest extends TestCase
 
         $this->assertInstanceOf(ContainerInterface::class, $c);
 
-        $r = new \ReflectionClass($containerBuilder);
+        $r = new ReflectionClass($containerBuilder);
         $property = $r->getProperty('environment');
         $property->setAccessible(true);
         $this->assertSame((string) Environment::boot(), (string) $property->getValue($containerBuilder));

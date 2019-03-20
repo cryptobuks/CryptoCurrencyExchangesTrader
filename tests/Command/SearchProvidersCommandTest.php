@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\Tests\Command;
 
+use Exception;
+use Generator;
 use Kefzce\CryptoCurrencyExchanges\Command\SearchProvidersCommand;
 use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Compiler\ProviderPass;
 use Kefzce\CryptoCurrencyExchanges\Provider\NullProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -21,7 +24,7 @@ class SearchProvidersCommandTest extends TestCase
      *
      * @param ProviderInterface $provider
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function testProvidersListWorksCorrectly($provider): void
     {
@@ -48,7 +51,7 @@ class SearchProvidersCommandTest extends TestCase
 
         $output = $commandTeser->getDisplay();
 
-        $r = new \ReflectionClass($provider);
+        $r = new ReflectionClass($provider);
 
         $this->assertNotEmpty($output);
 
@@ -67,9 +70,9 @@ class SearchProvidersCommandTest extends TestCase
     /**
      * @noinspection PhpUndefinedClassInspection
      *
-     * @return \Generator|null
+     * @return Generator|null
      */
-    public function providerList(): ?\Generator
+    public function providerList(): ?Generator
     {
         yield [new NullProvider()];
     }

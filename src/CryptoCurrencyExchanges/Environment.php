@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges;
 
+use LogicException;
+
 /**
  * Application environment.
  */
@@ -162,14 +164,14 @@ final class Environment
      *
      * @param string $specifiedEnvironment
      *
-     * @throws \LogicException The value of the environment is not specified, or is incorrect
+     * @throws LogicException The value of the environment is not specified, or is incorrect
      */
     private static function validateEnvironment(string $specifiedEnvironment): void
     {
         if ('' === $specifiedEnvironment ||
             false === \in_array($specifiedEnvironment, self::LIST, true)
         ) {
-            throw new \LogicException(
+            throw new LogicException(
                 sprintf(
                     'Provided incorrect value of the environment: "%s". Allowable values: %s',
                     $specifiedEnvironment, implode(', ', array_values(self::LIST))

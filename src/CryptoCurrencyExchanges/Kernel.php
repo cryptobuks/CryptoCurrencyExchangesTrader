@@ -31,13 +31,8 @@ final class Kernel
      */
     public function enableSentryErrorHandler(string $dsn = null): self
     {
-        Raven_Autoloader::register();
         $dsn = $dsn ?? getenv('SENTRY_DSN');
-        $client = new Raven_Client($dsn);
-        $errorHandler = new Raven_ErrorHandler($client);
-        $errorHandler->registerExceptionHandler();
-        $errorHandler->registerErrorHandler();
-        $errorHandler->registerShutdownFunction();
+        \Sentry\init(['dsn' => $dsn ]);
 
         return $this;
     }

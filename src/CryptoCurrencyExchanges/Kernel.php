@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges;
 
-use Raven_Autoloader;
-use Raven_Client;
-use Raven_ErrorHandler;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class Kernel
@@ -32,7 +29,7 @@ final class Kernel
     public function enableSentryErrorHandler(string $dsn = null): self
     {
         $dsn = $dsn ?? getenv('SENTRY_DSN');
-        \Sentry\init(['dsn' => $dsn ]);
+        \Sentry\init(['dsn' => $dsn]);
 
         return $this;
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kefzce\CryptoCurrencyExchanges\Converter;
 
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -82,6 +83,7 @@ final class ObjectConverter implements ConverterInterface
     private function assertValid(ConstraintViolationList $errors): void
     {
         if (\count($errors) > 0) {
+            /** @var ConstraintViolation $error */
             foreach ($errors as $error) {
                 $errorsMessage = sprintf(
                     '"%s" %s',

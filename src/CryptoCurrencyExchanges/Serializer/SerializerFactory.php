@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kefzce\CryptoCurrencyExchanges\Converter;
+namespace Kefzce\CryptoCurrencyExchanges\Serializer;
 
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;

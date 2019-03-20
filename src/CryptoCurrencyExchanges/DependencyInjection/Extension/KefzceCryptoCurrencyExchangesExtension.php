@@ -41,6 +41,7 @@ final class KefzceCryptoCurrencyExchangesExtension extends Extension
      * @param array                                                   $config
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @psalm-suppress MixedAssignment
+     * @psalm-suppress PossiblyFalseArgument
      *
      * @throws \ReflectionException
      *

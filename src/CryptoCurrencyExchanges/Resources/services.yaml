@@ -63,7 +63,7 @@ services:
   Kefzce\CryptoCurrencyExchanges\Validator\Validator:
       public: false
 
-  Kefzce\CryptoCurrencyExchanges\Converter\SerializerFactory:
+  Kefzce\CryptoCurrencyExchanges\Serializer\SerializerFactory:
     public: false
 
   custom.validator:
@@ -72,7 +72,7 @@ services:
 
   custom.serializer:
       class: Kefzce\CryptoCurrencyExchanges\Converter\SerializerFactory
-      factory: 'Kefzce\CryptoCurrencyExchanges\Converter\SerializerFactory:createSerializer'
+      factory: 'Kefzce\CryptoCurrencyExchanges\Serializer\SerializerFactory:createSerializer'
 
   object.converter:
       class: Kefzce\CryptoCurrencyExchanges\Converter\ObjectConverter

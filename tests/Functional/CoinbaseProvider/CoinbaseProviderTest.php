@@ -9,11 +9,11 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Kefzce\CryptoCurrencyExchanges\Converter\ObjectConverter;
-use Kefzce\CryptoCurrencyExchanges\Converter\SerializerFactory;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\CoinbaseProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\HttpClient;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Resource\Country;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Resource\CurrentUserResource;
+use Kefzce\CryptoCurrencyExchanges\Serializer\SerializerFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Validation;
 

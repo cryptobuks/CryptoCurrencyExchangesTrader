@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges;
 
-use Raven_Autoloader;
-use Raven_Client;
-use Raven_ErrorHandler;
+use Exception;
+use function Sentry\init;
+use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class Kernel
@@ -31,24 +31,19 @@ final class Kernel
      */
     public function enableSentryErrorHandler(string $dsn = null): self
     {
-        Raven_Autoloader::register();
         $dsn = $dsn ?? getenv('SENTRY_DSN');
-        $client = new Raven_Client($dsn);
-        $errorHandler = new Raven_ErrorHandler($client);
-        $errorHandler->registerExceptionHandler();
-        $errorHandler->registerErrorHandler();
-        $errorHandler->registerShutdownFunction();
+        init(['dsn' => $dsn]);
 
         return $this;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function runInConsoleMode(): void
     {
         if ($this->container->has('shell.console')) {
-            /** @var \Symfony\Component\Console\Application $application */
+            /** @var Application $application */
             $application = $this->container->get('shell.console');
             $application->run();
         }

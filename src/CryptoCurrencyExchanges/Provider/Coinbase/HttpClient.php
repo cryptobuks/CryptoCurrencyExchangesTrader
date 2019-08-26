@@ -12,11 +12,12 @@ use Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder;
 use Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Enum\Coinbase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 
 class HttpClient
 {
     /**
-     * @var \GuzzleHttp\ClientInterface
+     * @var ClientInterface
      */
     private $transport;
 
@@ -26,7 +27,7 @@ class HttpClient
     private $caBundle;
 
     /**
-     * @param \GuzzleHttp\ClientInterface $transport
+     * @param ClientInterface $transport
      */
     public function __construct(ClientInterface $transport)
     {
@@ -46,9 +47,9 @@ class HttpClient
      * @param string $path
      * @param array  $params
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     *@throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function request(string $method, string $path, array $params = []): ResponseInterface
     {
@@ -61,12 +62,12 @@ class HttpClient
     }
 
     /**
-     * @param \Psr\Http\Message\RequestInterface $request
-     * @param array                              $params
+     * @param RequestInterface $request
+     * @param array            $params
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     *@throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     private function send(RequestInterface $request, array $params = []): ResponseInterface
     {
@@ -133,15 +134,19 @@ class HttpClient
      * @param string $method
      * @param string $path
      * @param string $body
+     * @psalm-suppress TypeDoesNotContainType
      *
      * @return array
      */
     private function getRequestHeaders(string $method, string $path, string $body): array
     {
-        // @todo redesign passing parameters
         $timestamp = time();
         $apiKey = getenv('COINBASE_API_KEY') ?: '';
         $apiSecret = getenv('COINBASE_API_SECRET') ?: '';
+
+        if (false === $apiKey && false === $apiSecret) {
+            throw new RuntimeException('One or more environment variables missing, make sure you provide "COINBASE_API_KEY", "COINBASE_API_SECRET"');
+        }
         $signature = hash_hmac(
             'sha256',
             $timestamp . $method . $path . $body,

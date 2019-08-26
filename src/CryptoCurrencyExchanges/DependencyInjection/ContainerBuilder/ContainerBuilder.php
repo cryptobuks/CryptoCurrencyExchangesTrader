@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kefzce\CryptoCurrencyExchanges\DependencyInjection\ContainerBuilder;
 
 use Kefzce\CryptoCurrencyExchanges\Environment;
+use SplObjectStorage;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
@@ -18,7 +19,7 @@ final class ContainerBuilder
     private const CONTAINER_NAME_TEMPLATE = '%s%sProjectContainer';
 
     /**
-     * @var \SplObjectStorage
+     * @var SplObjectStorage
      */
     private $compilerPasses;
 
@@ -33,7 +34,7 @@ final class ContainerBuilder
     private $parameters;
 
     /**
-     * @var \SplObjectStorage
+     * @var SplObjectStorage
      */
     private $extensions;
 
@@ -49,8 +50,8 @@ final class ContainerBuilder
 
     public function __construct(Environment $environment)
     {
-        $compilerPassCollection = new \SplObjectStorage();
-        $extensionsCollection = new \SplObjectStorage();
+        $compilerPassCollection = new SplObjectStorage();
+        $extensionsCollection = new SplObjectStorage();
         $this->compilerPasses = $compilerPassCollection;
         $this->extensions = $extensionsCollection;
         $this->parameters = [];
@@ -68,7 +69,7 @@ final class ContainerBuilder
     }
 
     /**
-     * @param \Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface ...$compilerPasses
+     * @param CompilerPassInterface ...$compilerPasses
      */
     public function addCompilerPasses(CompilerPassInterface ...$compilerPasses): void
     {

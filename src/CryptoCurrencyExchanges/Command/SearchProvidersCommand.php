@@ -17,12 +17,12 @@ final class SearchProvidersCommand extends Command
     protected static $defaultName = 'providers:search';
 
     /**
-     * @var \Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver
+     * @var ProviderResolver
      */
     private $resolver;
 
     /**
-     * @param \Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver $resolver
+     * @param ProviderResolver $resolver
      */
     public function __construct(ProviderResolver $resolver)
     {
@@ -41,8 +41,8 @@ final class SearchProvidersCommand extends Command
     }
 
     /**
-     * @param \Symfony\Component\Console\Input\InputInterface   $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param InputInterface  $input
+     * @param OutputInterface $output
      * @psalm-suppress InvalidCast
      * @psalm-suppress MixedAssignment
      *

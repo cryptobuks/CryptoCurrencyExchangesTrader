@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kefzce\CryptoCurrencyExchanges\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -44,13 +45,13 @@ final class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @internal
-     *
      * @param TreeBuilder $builder
      * @param string      $name
      * @param string      $type
      *
-     * @return ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     * @return ArrayNodeDefinition|NodeDefinition
+     *
+     *@internal
      */
     public static function getRootNodeWithoutDeprecation(TreeBuilder $builder, string $name, string $type = 'array')
     {

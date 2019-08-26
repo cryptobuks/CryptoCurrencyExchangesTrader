@@ -6,7 +6,7 @@ namespace Kefzce\CryptoCurrencyExchanges\Provider\Coinbase\Resource;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class CurrentUserResource
+final class UserResource
 {
     /**
      * @Assert\NotBlank()
@@ -77,59 +77,4 @@ final class CurrentUserResource
      * @var string
      */
     public $email;
-
-    /**
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    public $timeZone;
-
-    /**
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    public $nativeCurrency;
-
-    /**
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    public $bitcoinUnit;
-
-    /**
-     * @var Country
-     */
-    public $country;
-
-    /**
-     * @Assert\Blank()
-     *
-     * @var string|null
-     */
-    public $state;
-
-    /**
-     * @var bool
-     */
-    public $regionSupportsFiatTransfers;
-
-    /**
-     * @var bool
-     */
-    public $regionSupportsCryptoToCryptoTransfers;
-
-    /**
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    public $createdAt;
-
-    /**
-     * @var Tiers
-     */
-    public $tiers;
 }

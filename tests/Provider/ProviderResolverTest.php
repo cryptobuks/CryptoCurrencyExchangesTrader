@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\Tests\Provider;
 
+use Generator;
 use Kefzce\CryptoCurrencyExchanges\Provider\NullProvider;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderInterface;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderResolver;
 use Kefzce\CryptoCurrencyExchanges\Tests\Provider\Stubs\FirstValidProvider;
 use Kefzce\CryptoCurrencyExchanges\Tests\Provider\Stubs\SecondValidProvider;
 use PHPUnit\Framework\TestCase;
+use SplObjectStorage;
+use stdClass;
+use TypeError;
 
 /** @noinspection PhpUndefinedClassInspection */
 final class ProviderResolverTest extends TestCase
@@ -45,7 +49,7 @@ final class ProviderResolverTest extends TestCase
     public function testShouldThrowExceptionIfIncorrectTypeProvidersPassing($provider): void
     {
         $this->assertEmpty($this->resolver->getProviders());
-        $this->expectException(\TypeError::class);
+        $this->expectException(TypeError::class);
         $this->resolver->addProvider($provider);
         $this->assertNotEmpty($this->resolver->getProviders());
         $this->assertCount(0, $this->resolver->getProviders());
@@ -70,7 +74,7 @@ final class ProviderResolverTest extends TestCase
     }
 
     /** @noinspection PhpUndefinedClassInspection */
-    public function correctProviders(): ?\Generator
+    public function correctProviders(): ?Generator
     {
         yield [new FirstValidProvider()];
 
@@ -78,15 +82,15 @@ final class ProviderResolverTest extends TestCase
     }
 
     /** @noinspection PhpUndefinedClassInspection */
-    public function incorrectProviders(): ?\Generator
+    public function incorrectProviders(): ?Generator
     {
-        yield [new \stdClass()];
+        yield [new stdClass()];
 
-        yield [new \SplObjectStorage()];
+        yield [new SplObjectStorage()];
     }
 
     /** @noinspection PhpUndefinedClassInspection */
-    public function duplicateProviders(): ?\Generator
+    public function duplicateProviders(): ?Generator
     {
         yield [new NullProvider()];
 

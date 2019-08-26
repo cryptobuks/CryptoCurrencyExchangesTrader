@@ -7,6 +7,7 @@ namespace Kefzce\CryptoCurrencyExchanges\Tests\Http;
 use GuzzleHttp\ClientInterface;
 use Kefzce\CryptoCurrencyExchanges\Http\ClientBuilder;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class ClientTest extends TestCase
 {
@@ -39,7 +40,7 @@ class ClientTest extends TestCase
             [['option' => 'value']],
             [['anotherOption' => 'newValue']],
             [['integer' => 123]],
-            [['class' => new \stdClass()]],
+            [['class' => new stdClass()]],
         ];
     }
 
@@ -52,7 +53,7 @@ class ClientTest extends TestCase
             ['option' => 'value'],
             ['anotherOption' => 'newValue'],
             ['integer' => 123],
-            ['class' => new \stdClass()],
+            ['class' => new stdClass()],
         ];
     }
 

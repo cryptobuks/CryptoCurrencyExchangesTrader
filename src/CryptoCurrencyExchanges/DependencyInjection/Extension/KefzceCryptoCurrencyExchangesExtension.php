@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\DependencyInjection\Extension;
 
+use Exception;
 use Kefzce\CryptoCurrencyExchanges\DependencyInjection\Configuration;
+use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,7 +25,7 @@ final class KefzceCryptoCurrencyExchangesExtension extends Extension
      * @psalm-suppress MixedAssignment
      * @psalm-suppress MixedTypeCoercion
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -38,17 +41,18 @@ final class KefzceCryptoCurrencyExchangesExtension extends Extension
     }
 
     /**
-     * @param array                                                   $config
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param array            $config
+     * @param ContainerBuilder $container
      * @psalm-suppress MixedAssignment
+     * @psalm-suppress PossiblyFalseArgument
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      *
-     * @return \Kefzce\CryptoCurrencyExchanges\DependencyInjection\Configuration
+     * @return Configuration
      */
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration
     {
-        $rc = new \ReflectionClass(Configuration::class);
+        $rc = new ReflectionClass(Configuration::class);
         $container->addResource(new FileResource($rc->getFileName()));
 
         $debug = $container->hasParameter('kernel.debug') ? $container->getParameter('kernel.debug') : false;

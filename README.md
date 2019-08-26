@@ -142,6 +142,72 @@ class Service
     }
 }
 ```
+## Coinbase Usage Example
+## Usage
+
+This is not intended to provide complete documentation of the API. For more
+detail, please refer to the
+[official documentation](https://developers.coinbase.com/api/v2).
+
+### [Market Data](https://developers.coinbase.com/api/v2#data-api)
+
+**List supported native currencies**
+
+```php
+/** @var CurrenciesResource $currencies */
+$currencies = $provider->getCurrencies();
+```
+
+**List exchange rates**
+
+```php
+/** @var ExchangeRatesResource $rates */
+$rates = $provider->getExchangeRates();
+```
+
+**Buy price**
+
+```php
+/** @var BuyPriceCurrencyResource $buyPrice */
+$buyPrice = $provider->getBuyPrice('USD');
+```
+
+**Sell price**
+
+```php
+/** @var SellPriceCurrencyResource $sellPrice */
+$sellPrice = $provider->getSellPrice('USD');
+```
+
+**Spot price**
+
+```php
+/** @var SpotPriceCurrencyResource $spotPrice */
+$spotPrice = $provider->getSpotPrice('USD');
+```
+
+**Current server time**
+
+```php
+/** @var CurrentServiceTimeResource $time */
+$time = $provider->getCurrentServiceTime();
+```
+
+### [Users](https://developers.coinbase.com/api/v2#users)
+
+**Get authorization info**
+
+```php
+/** @var CurrentAuthorizationResource $auth */
+$auth = $provider->getCurrentAuthorization();
+```
+
+**Lookup user info**
+
+```php
+/** @var UserResource $user */
+$user = $provider->getUser($userId);
+```
 ### 
 # Run tests
 > All test available in tests folder, run them directly by typing

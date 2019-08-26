@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kefzce\CryptoCurrencyExchanges\Tests\Provider;
 
+use Generator;
 use Kefzce\CryptoCurrencyExchanges\DependencyInjection\ContainerBuilder\ContainerBuilder;
 use Kefzce\CryptoCurrencyExchanges\Environment;
 use Kefzce\CryptoCurrencyExchanges\Provider\ProviderBuilder;
@@ -100,7 +101,7 @@ class ProviderBuilderTest extends TestCase
     }
 
     /** @noinspection PhpUndefinedClassInspection */
-    public function correctProviderList(): ?\Generator
+    public function correctProviderList(): ?Generator
     {
         yield [new FirstValidProvider()];
 
@@ -108,7 +109,7 @@ class ProviderBuilderTest extends TestCase
     }
 
     /** @noinspection PhpUndefinedClassInspection */
-    public function incorrectProviderList(): ?\Generator
+    public function incorrectProviderList(): ?Generator
     {
         yield [new AnotherInvalidProvider()];
 

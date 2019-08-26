@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kefzce\CryptoCurrencyExchanges\Mapper;
+namespace Kefzce\CryptoCurrencyExchanges\Converter;
 
-interface MapperInterface
+interface ConverterInterface
 {
     /**
      * @param array  $data
